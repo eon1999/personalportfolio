@@ -10,7 +10,8 @@ const CLICKABLE =
   'a, button, summary, label, input, select, textarea, [role="button"], [role="link"], [data-reticle="target"]';
 
 const SIZE = 26;
-const LOCK_SCALE = 2.15;
+/** How far the reticle opens when it finds something clickable. */
+const LOCK_SCALE = 1.5;
 
 /**
  * The pointer, replaced by the insignia: a hollow triangle drawn in the fire

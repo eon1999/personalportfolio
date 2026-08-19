@@ -64,7 +64,7 @@ export function HeroName() {
       </span>
 
       <span ref={textRef} className={`${NAME_CLASS} relative block`}>
-        <DisplayText className="origin-center">
+        <DisplayText hatch className="origin-center">
           {PROFILE.firstName} {PROFILE.lastName}
         </DisplayText>
       </span>

@@ -24,7 +24,7 @@ export default function AboutPage() {
         <PageHeader marker="FILE / 01 — ABOUT" title="ABOUT" />
 
         <section className="grid grid-cols-1 gap-6 border-b border-line pb-14 pt-14 wide:grid-cols-[180px_1fr] wide:gap-[34px]">
-          <h2 className="text-[10px] tracking-[.28em] text-ac">RECORD</h2>
+          <h2 className="section-marker">RECORD</h2>
           <div>
             {ABOUT_PARAGRAPHS.map((paragraph, index) => (
               <p
@@ -42,7 +42,7 @@ export default function AboutPage() {
         </section>
 
         <section className="grid grid-cols-1 gap-6 border-b border-line pb-14 pt-14 wide:grid-cols-[180px_1fr] wide:gap-[34px]">
-          <h2 className="text-[10px] tracking-[.28em] text-ac">
+          <h2 className="section-marker">
             CURRENT POSTINGS
           </h2>
           <div>
@@ -73,7 +73,7 @@ export default function AboutPage() {
         </section>
 
         <section className="grid grid-cols-1 gap-6 pb-[90px] pt-14 wide:grid-cols-[180px_1fr] wide:gap-[34px]">
-          <h2 className="text-[10px] tracking-[.28em] text-ac">CONTACT</h2>
+          <h2 className="section-marker">CONTACT</h2>
           <div>
             <a
               href={`mailto:${PROFILE.email}`}

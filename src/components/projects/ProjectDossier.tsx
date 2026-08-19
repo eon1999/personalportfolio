@@ -136,7 +136,7 @@ export function ProjectDossier({ project, onClose }: ProjectDossierProps) {
             data-print
             className="mt-4 text-[clamp(30px,6vw,50px)] leading-none text-ink"
           >
-            <DisplayText>{project.title}</DisplayText>
+            <DisplayText hatch>{project.title}</DisplayText>
           </h2>
 
           <p

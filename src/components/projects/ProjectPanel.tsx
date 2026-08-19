@@ -80,7 +80,7 @@ export function ProjectPanel({
         </div>
 
         <h3 className="mt-4 text-[clamp(26px,4vw,38px)] leading-none text-ink">
-          <DisplayText>{project.title}</DisplayText>
+          <DisplayText hatch>{project.title}</DisplayText>
         </h3>
 
         <p className="mt-3 min-h-[3.5rem] text-[12.5px] leading-[1.75] text-body-card">

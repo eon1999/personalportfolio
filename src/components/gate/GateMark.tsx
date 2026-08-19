@@ -52,7 +52,9 @@ export function GateMark({ eyebrow, headline, sub }: GateMarkProps) {
         <p className="gate-line mt-[14px] text-[clamp(20px,3.6vw,34px)] leading-[1.15] tracking-[.16em] text-ink opacity-0">
           {headline.map((line, index) => (
             <span key={index} className="block">
-              <DisplayText className="origin-center">{line}</DisplayText>
+              <DisplayText hatch className="origin-center">
+                {line}
+              </DisplayText>
             </span>
           ))}
         </p>

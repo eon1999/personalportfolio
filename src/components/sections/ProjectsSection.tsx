@@ -16,7 +16,7 @@ export function ProjectsSection() {
         data-scatter-item
         className="flex flex-wrap items-baseline justify-between gap-3"
       >
-        <h2 className="text-[10px] tracking-[.28em] text-ac">02 / PROJECTS</h2>
+        <h2 className="section-marker">02 / PROJECTS</h2>
         <p className="text-[9.5px] tracking-[.2em] text-dim">
           ◀ ▶ TO CYCLE UNITS
         </p>

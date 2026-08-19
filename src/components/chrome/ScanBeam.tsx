@@ -50,7 +50,7 @@ export function ScanBeam() {
         style={{
           height: BAND,
           background:
-            "linear-gradient(180deg, transparent, rgba(255,107,26,.005) 55%, rgba(255,107,26,.018) 88%, rgba(255,140,60,.032))",
+            "linear-gradient(180deg, transparent, color-mix(in oklab, var(--color-ac) 0.7%, transparent) 55%, color-mix(in oklab, var(--color-ac) 2.4%, transparent) 88%, color-mix(in oklab, var(--color-warn) 4%, transparent))",
         }}
       />
       {/* The line itself, brightest mid-screen and feathered at both edges. */}
@@ -60,8 +60,9 @@ export function ScanBeam() {
           top: BAND - 1,
           height: 1,
           background:
-            "linear-gradient(90deg, transparent, rgba(255,140,60,.12) 12%, rgba(255,181,69,.2) 50%, rgba(255,140,60,.12) 88%, transparent)",
-          boxShadow: "0 0 10px rgba(255,107,26,.14)",
+            "linear-gradient(90deg, transparent, color-mix(in oklab, var(--color-warn) 14%, transparent) 12%, color-mix(in oklab, var(--color-warn) 24%, transparent) 50%, color-mix(in oklab, var(--color-warn) 14%, transparent) 88%, transparent)",
+          boxShadow:
+            "0 0 12px color-mix(in oklab, var(--color-ac) 18%, transparent)",
         }}
       />
     </div>

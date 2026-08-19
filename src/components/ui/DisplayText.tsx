@@ -2,6 +2,11 @@ import { cn } from "@/lib/cn";
 
 interface DisplayTextProps {
   readonly children: React.ReactNode;
+  /**
+   * Cut the scanline raster across the type. Only for headings above ~26px —
+   * below that the bars start closing over the counters. See `.display-hatch`.
+   */
+  readonly hatch?: boolean;
   /** `origin-center` where the type is centred rather than ranged left. */
   readonly className?: string;
 }
@@ -17,6 +22,10 @@ interface DisplayTextProps {
  *
  * Size, tracking, leading and colour stay on the heading and inherit down.
  */
-export function DisplayText({ children, className }: DisplayTextProps) {
-  return <span className={cn("display-type", className)}>{children}</span>;
+export function DisplayText({ children, hatch, className }: DisplayTextProps) {
+  return (
+    <span className={cn("display-type", hatch && "display-hatch", className)}>
+      {children}
+    </span>
+  );
 }

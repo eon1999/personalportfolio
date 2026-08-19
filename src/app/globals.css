@@ -17,18 +17,25 @@
   --color-body-card: #a5a29a;
   --color-dim: #6d716f;
 
-  /* Accents */
-  --color-ac: #ff6b1a;
+  /* Accents.
+
+     `--color-ac` is the only place the orange is written down. Every tint,
+     ring and glow on the site is struck from it with `color-mix`, so the
+     Display P3 lift further down carries into all of them instead of only the
+     flat fills. The mixes are `in oklab` deliberately — mixing `in srgb` would
+     round-trip a P3 colour through the smaller gamut and clip the extra
+     chroma straight back off. */
+  --color-ac: #ff6a00;
   --color-ac2: #8bffb0;
   --color-warn: #ffb545;
-  --color-ac-tint: rgba(255, 107, 26, 0.1);
-  --color-ac-wash: rgba(255, 107, 26, 0.06);
+  --color-ac-tint: color-mix(in oklab, var(--color-ac) 12%, transparent);
+  --color-ac-wash: color-mix(in oklab, var(--color-ac) 7%, transparent);
 
   /* Hairlines, rings and tracks */
   --color-line: rgba(233, 230, 221, 0.13);
-  --color-ring-strong: rgba(255, 107, 26, 0.35);
-  --color-ring: rgba(255, 107, 26, 0.2);
-  --color-ring-faint: rgba(255, 107, 26, 0.18);
+  --color-ring-strong: color-mix(in oklab, var(--color-ac) 42%, transparent);
+  --color-ring: color-mix(in oklab, var(--color-ac) 26%, transparent);
+  --color-ring-faint: color-mix(in oklab, var(--color-ac) 22%, transparent);
   --color-track: rgba(255, 255, 255, 0.08);
   --color-track-soft: rgba(255, 255, 255, 0.07);
 
@@ -48,10 +55,36 @@
     /* How far the page recedes behind the project dossier. */
     --page-dim: 1;
     --page-blur: 0px;
+
+    /* The halo every accent-coloured thing carries. Measured in `em` so it
+       tracks the type it sits on — the same rule has to work on a 9.5px status
+       label and on the 34px boot phase without being retuned for either.
+       Two stops again: a tight core that thickens the glyph, and a wide haze
+       that spills past it. */
+    --ac-bloom:
+      0 0 0.32em color-mix(in oklab, var(--color-ac) 55%, transparent),
+      0 0 0.9em color-mix(in oklab, var(--color-ac) 30%, transparent);
+  }
+
+  /* sRGB has no more orange left to give: #ff6a00 already sits on the gamut
+     boundary for this hue, which is why the swatch above is only marginally
+     hotter than what it replaced. The remaining headroom is in Display P3 —
+     most current laptops and phones have it — so the accent is restated there
+     and every `color-mix` derived from it rises with it. Screens without P3
+     never see this rule and keep the sRGB ceiling. */
+  @supports (color: color(display-p3 1 0 0)) {
+    :root {
+      --color-ac: color(display-p3 1 0.41 0);
+    }
   }
 
   html {
     scroll-behavior: smooth;
+    /* Reserve the scrollbar's column at all times. The dossier locks scrolling
+       by setting `overflow: hidden` on the body, which would otherwise pull the
+       bar out from under the layout and shift the whole page sideways as the
+       panel opens. */
+    scrollbar-gutter: stable;
   }
 
   /* The reticle replaces the pointer outright — including over links and
@@ -77,15 +110,72 @@
   a {
     color: var(--color-ac);
     text-decoration: none;
+    text-shadow: var(--ac-bloom);
+    transition: text-shadow var(--t-hover) ease-out;
   }
 
+  /* Hover takes the link to ink, and an orange halo around white type just
+     reads as a printing error — the glow leaves with the colour that earned
+     it. */
   a:hover {
     color: var(--color-ink);
+    text-shadow: none;
   }
 
   ::selection {
     background: var(--color-ac);
     color: #000;
+  }
+
+  /* ---- Scrollbars ------------------------------------------------------
+     The OS bar is the last piece of grey chrome on the screen, so it gets
+     rebuilt as part of the HUD: a sunken track cut with the same hairline as
+     every other panel edge, and a thin neon slug riding in it.
+
+     These two blocks are alternatives, not layers. Blink supports both the
+     `::-webkit-` pseudo-elements and the standard properties, but it treats
+     `scrollbar-color` as an override — declare it and the pseudo-element rules
+     below are dropped for a plain two-tone bar. Gecko is the reverse: no
+     pseudo-elements, standard properties only. Hence the guard, which asks
+     precisely that question rather than sniffing the engine. */
+  ::-webkit-scrollbar {
+    width: 11px;
+    height: 11px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-void);
+    border-left: 1px solid var(--color-line);
+  }
+
+  /* The transparent border is the padding: with `background-clip: content-box`
+     the paint stops short of it, leaving a 5px slug centred in an 11px gutter.
+     Scrollbar parts get no box model of their own, so this is the only way to
+     inset one. */
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--color-ac) 72%, transparent);
+    background-clip: content-box;
+    border: 3px solid transparent;
+    transition: background-color var(--t-hover) ease-out;
+  }
+
+  ::-webkit-scrollbar-thumb:hover,
+  ::-webkit-scrollbar-thumb:active {
+    background: var(--color-ac);
+    background-clip: content-box;
+  }
+
+  /* Where a vertical and a horizontal bar meet. */
+  ::-webkit-scrollbar-corner {
+    background: var(--color-void);
+  }
+
+  @supports (scrollbar-width: thin) and (not selector(::-webkit-scrollbar)) {
+    html {
+      scrollbar-width: thin;
+      scrollbar-color: color-mix(in oklab, var(--color-ac) 72%, transparent)
+        var(--color-void);
+    }
   }
 
   /* The prototype had no focus styling at all; the amber outline is the
@@ -121,11 +211,70 @@
      where it would have at 100% and leaves ~21% slack to its right. Fine for
      headings; worth knowing before putting body copy through it. */
   .display-type {
+    position: relative;
     display: inline-block;
     font-family: var(--font-display);
     font-weight: 700;
     transform: scaleX(0.79);
     transform-origin: left center;
+  }
+
+  /* Raster hatching, cut across the type the way a scanline display draws it.
+
+     The pitch is fixed rather than measured in `em` on purpose: a tube's
+     raster is a property of the screen, not of the type sitting on it, so the
+     lines stay 4px apart whether they are crossing the 116px hero or a 26px
+     panel title. Scaling them with the font would read as a texture painted
+     onto the letters instead of a screen showing through them — and it is the
+     same 4px pitch as `.scan-site`, so the two rasters agree.
+
+     Only worth applying above ~26px. Below that the bars start closing over
+     the counters and the word turns to mud, which is why this is opt-in
+     rather than part of `.display-type`. */
+  .display-hatch::after {
+    content: "";
+    position: absolute;
+    /* Overshoot the line box vertically. The headings this lands on run as
+       tight as `leading-[.9]`, which crops the box inside the glyphs — without
+       the bleed the hatch stops short of ascenders and descenders. */
+    inset: -0.14em 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0 2.5px,
+      rgba(0, 0, 0, 0.55) 2.5px 4px
+    );
+  }
+
+  /* ---- Accent bloom ----------------------------------------------------
+     sRGB has no hotter orange to offer, so the remaining way to make the
+     accent read as lit rather than merely coloured is to let it spill past its
+     own edges. These attach to Tailwind's generated utilities rather than to a
+     class of our own: `text-ac` is on 18 elements, `bg-ac` on 11, and adding a
+     second class to each would have to be remembered at every new call site.
+     The utilities set `color` / `background-color`, these set the shadow, so
+     the two compose instead of colliding — and both are struck from the same
+     `--color-ac`, so the token stays the single source. */
+  .text-ac {
+    text-shadow: var(--ac-bloom);
+  }
+
+  /* Accent fills are the small lit marks — carousel dots, corner ticks, the
+     rules under headings. `em` would be meaningless on a 2px rule, so their
+     halo is fixed. */
+  .bg-ac {
+    box-shadow:
+      0 0 5px color-mix(in oklab, var(--color-ac) 60%, transparent),
+      0 0 14px color-mix(in oklab, var(--color-ac) 32%, transparent);
+  }
+
+  /* The amber index line above every section — `02 / PROJECTS`. Was 10px in
+     seven places before it was worth naming. */
+  .section-marker {
+    font-size: 13px;
+    letter-spacing: 0.28em;
+    color: var(--color-ac);
+    text-shadow: var(--ac-bloom);
   }
 
   /* The insignia / wordmark triangle. */
@@ -216,8 +365,12 @@
     );
   }
 
+  /* Two stacked falloffs rather than one: a tight hot core with a wide, faint
+     haze around it is what reads as a lit filament instead of a blur. */
   .glow-edge {
-    box-shadow: 0 0 34px 10px rgba(255, 107, 26, 0.45);
+    box-shadow:
+      0 0 14px 2px color-mix(in oklab, var(--color-ac) 55%, transparent),
+      0 0 40px 12px color-mix(in oklab, var(--color-ac) 32%, transparent);
   }
 }
 
@@ -239,10 +392,10 @@
       ),
       linear-gradient(
         90deg,
-        rgba(255, 107, 26, 0.035),
+        color-mix(in oklab, var(--color-ac) 5%, transparent),
         transparent 12%,
         transparent 88%,
-        rgba(255, 107, 26, 0.035)
+        color-mix(in oklab, var(--color-ac) 5%, transparent)
       );
   }
 
@@ -265,7 +418,8 @@
 
   /* The lit segments bloom into the glass in front of them. */
   .lcd {
-    filter: drop-shadow(0 0 3px rgba(255, 107, 26, 0.5));
+    filter: drop-shadow(0 0 2px color-mix(in oklab, var(--color-ac) 70%, transparent))
+      drop-shadow(0 0 7px color-mix(in oklab, var(--color-ac) 40%, transparent));
   }
 
   .lcd-cool {
@@ -293,7 +447,7 @@
         100%,
       radial-gradient(
         120% 100% at 50% 0%,
-        rgba(255, 107, 26, 0.05),
+        color-mix(in oklab, var(--color-ac) 7%, transparent),
         transparent 70%
       ),
       var(--color-void);
@@ -319,14 +473,14 @@
     background:
       linear-gradient(
         180deg,
-        rgba(255, 107, 26, 0.05),
+        color-mix(in oklab, var(--color-ac) 7%, transparent),
         rgba(14, 16, 17, 0.94) 18%,
         rgba(14, 16, 17, 0.97)
       );
     box-shadow:
-      0 0 0 1px rgba(255, 107, 26, 0.08),
-      0 0 60px rgba(255, 107, 26, 0.16),
-      inset 0 0 40px rgba(255, 107, 26, 0.05);
+      0 0 0 1px color-mix(in oklab, var(--color-ac) 12%, transparent),
+      0 0 70px color-mix(in oklab, var(--color-ac) 22%, transparent),
+      inset 0 0 40px color-mix(in oklab, var(--color-ac) 7%, transparent);
     transform-origin: center;
   }
 

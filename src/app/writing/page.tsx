@@ -22,7 +22,7 @@ export default function WritingPage() {
         />
 
         <section className="grid grid-cols-1 gap-6 pb-[90px] pt-14 wide:grid-cols-[180px_1fr] wide:gap-[34px]">
-          <h2 className="text-[10px] tracking-[.28em] text-ac">
+          <h2 className="section-marker">
             {`ALL ENTRIES / ${String(WRITING.length).padStart(3, "0")}`}
           </h2>
           <WritingFeed entries={WRITING} />

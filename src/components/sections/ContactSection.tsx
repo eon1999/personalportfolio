@@ -8,7 +8,7 @@ export function ContactSection() {
   return (
     <SectionShell id="contact" marker="05 / CONTACT" last>
       <p className="text-[clamp(30px,4.6vw,44px)] leading-[1.1]">
-        <DisplayText>
+        <DisplayText hatch>
           {askLineOne}
           <br />
           {askLineTwo}

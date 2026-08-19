@@ -19,7 +19,7 @@ export function SweepBand() {
       style={{
         top: -BAND_HEIGHT,
         height: `calc(100% + ${BAND_HEIGHT}px)`,
-        background: `linear-gradient(180deg, transparent, rgba(255,107,26,.06), transparent) top center / 100% ${BAND_HEIGHT}px no-repeat`,
+        background: `linear-gradient(180deg, transparent, color-mix(in oklab, var(--color-ac) 8%, transparent), transparent) top center / 100% ${BAND_HEIGHT}px no-repeat`,
         willChange: "transform",
       }}
       animate={{ y: ["0%", "100%"] }}

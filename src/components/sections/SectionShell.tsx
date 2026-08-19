@@ -24,7 +24,7 @@ export function SectionShell({
         last ? "pb-[90px]" : "border-b border-line pb-14",
       )}
     >
-      <h2 data-scatter-item className="text-[10px] tracking-[.28em] text-ac">
+      <h2 data-scatter-item className="section-marker">
         {marker}
       </h2>
       {/* Each block inside comes apart on its own — see `useScatter`. */}

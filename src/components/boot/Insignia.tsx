@@ -68,7 +68,7 @@ export function Insignia() {
         <linearGradient id="insignia-fire" x1="0" y1="0" x2="0.2" y2="1">
           <stop offset="0%" stopColor="#ffe08a" />
           <stop offset="32%" stopColor="#ffa53d" />
-          <stop offset="68%" stopColor="#ff6b1a" />
+          <stop offset="68%" stopColor="var(--color-ac)" />
           <stop offset="100%" stopColor="#8f1c06" />
         </linearGradient>
         <linearGradient id="insignia-fire-alt" x1="1" y1="1" x2="0.8" y2="0">
@@ -78,7 +78,7 @@ export function Insignia() {
         </linearGradient>
         <radialGradient id="insignia-aura">
           <stop offset="0%" stopColor="#ffb066" stopOpacity="0.5" />
-          <stop offset="42%" stopColor="#ff6b1a" stopOpacity="0.24" />
+          <stop offset="42%" stopColor="var(--color-ac)" stopOpacity="0.3" />
           <stop offset="100%" stopColor="#ff3c00" stopOpacity="0" />
         </radialGradient>
       </defs>
@@ -123,7 +123,7 @@ export function Insignia() {
         fill="url(#insignia-fire)"
         style={{
           filter:
-            "drop-shadow(0 0 8px rgba(255,107,26,.85)) drop-shadow(0 0 20px rgba(255,60,0,.5))",
+            "drop-shadow(0 0 8px color-mix(in oklab, var(--color-ac) 90%, transparent)) drop-shadow(0 0 22px color-mix(in oklab, var(--color-ac) 55%, transparent))",
         }}
       />
     </svg>
