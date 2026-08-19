@@ -1,0 +1,375 @@
+@import "tailwindcss";
+
+@theme {
+  /* Surfaces */
+  --color-bg: #08090a;
+  --color-panel: #0e1011;
+  --color-panel-hover: #121415;
+  --color-void: #040506;
+  --color-chrome-top: rgba(8, 9, 10, 0.86);
+  --color-chrome-bottom: rgba(8, 9, 10, 0.92);
+  --color-log-bg: rgba(255, 255, 255, 0.015);
+
+  /* Text */
+  --color-ink: #e9e6dd;
+  --color-body: #c8c5bc;
+  --color-body-hero: #b4b1a8;
+  --color-body-card: #a5a29a;
+  --color-dim: #6d716f;
+
+  /* Accents */
+  --color-ac: #ff6b1a;
+  --color-ac2: #8bffb0;
+  --color-warn: #ffb545;
+  --color-ac-tint: rgba(255, 107, 26, 0.1);
+  --color-ac-wash: rgba(255, 107, 26, 0.06);
+
+  /* Hairlines, rings and tracks */
+  --color-line: rgba(233, 230, 221, 0.13);
+  --color-ring-strong: rgba(255, 107, 26, 0.35);
+  --color-ring: rgba(255, 107, 26, 0.2);
+  --color-ring-faint: rgba(255, 107, 26, 0.18);
+  --color-track: rgba(255, 255, 255, 0.08);
+  --color-track-soft: rgba(255, 255, 255, 0.07);
+
+  /* Times proper where it is installed; the two fallbacks are metric
+     compatible with it, so the 79% squeeze lands the same on Linux. */
+  --font-display: "Times New Roman", "Tinos", "Liberation Serif", Times, serif;
+  --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", ui-monospace, monospace;
+
+  /* The one place the desktop layout collapses. */
+  --breakpoint-wide: 900px;
+}
+
+@layer base {
+  :root {
+    --scan: 0.5;
+    --t-hover: 160ms;
+    /* How far the page recedes behind the project dossier. */
+    --page-dim: 1;
+    --page-blur: 0px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* The reticle replaces the pointer outright — including over links and
+     buttons, which set their own cursor. */
+  html.reticle-on,
+  html.reticle-on * {
+    cursor: none !important;
+  }
+
+  html.dossier-open {
+    --page-dim: 0.28;
+    --page-blur: 2px;
+    --scan: 0.18;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-mono);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    color: var(--color-ac);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--color-ink);
+  }
+
+  ::selection {
+    background: var(--color-ac);
+    color: #000;
+  }
+
+  /* The prototype had no focus styling at all; the amber outline is the
+     obvious basis for it. */
+  :where(a, button):focus-visible {
+    outline: 1px solid var(--color-ac);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  /* ---- Display type ----------------------------------------------------
+     Times New Roman bold, squeezed to 79% of its natural width. Times ships
+     no condensed cut and no width axis, so `font-stretch` has nothing to act
+     on — the condensing is the scale, the way it would be set in Word or
+     Illustrator.
+
+     Two deliberate choices. It is `transform` rather than the `scale`
+     property, because `transform` is the one anime.js's layout engine knows
+     to mute before it measures — with `scale` the carousel would size the
+     panel headings off an already-squeezed box and squeeze them twice. And it
+     wants to sit on its own span rather than on the heading, because anime
+     owns `style.transform` on anything it animates: the scatter, the
+     dossier's print-in, the gate's line reveal. See `DisplayText`.
+
+     The box is laid out at full width and then squeezed, so a line wraps
+     where it would have at 100% and leaves ~21% slack to its right. Fine for
+     headings; worth knowing before putting body copy through it. */
+  .display-type {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    transform: scaleX(0.79);
+    transform-origin: left center;
+  }
+
+  /* The insignia / wordmark triangle. */
+  .tri {
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  }
+
+  .card {
+    border: 1px solid var(--color-line);
+    background: var(--color-panel);
+    transition:
+      border-color var(--t-hover) ease-out,
+      background-color var(--t-hover) ease-out;
+  }
+
+  .card:hover {
+    border-color: var(--color-ac);
+    background: var(--color-panel-hover);
+  }
+
+  .chip {
+    border: 1px solid var(--color-line);
+    color: var(--color-dim);
+  }
+
+  /* Amber outline, fills on hover. */
+  .btn-ac {
+    border: 1px solid var(--color-ac);
+    color: var(--color-ac);
+    background: transparent;
+    transition:
+      background-color var(--t-hover) ease-out,
+      color var(--t-hover) ease-out;
+  }
+
+  .btn-ac:hover {
+    background: var(--color-ac);
+    color: #000;
+  }
+
+  /* Hairline outline, brightens to ink on hover. */
+  .btn-ghost {
+    border: 1px solid var(--color-line);
+    color: var(--color-dim);
+    background: transparent;
+    transition:
+      border-color var(--t-hover) ease-out,
+      color var(--t-hover) ease-out;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--color-ink);
+    color: var(--color-ink);
+  }
+
+  /* Hairline outline, goes amber on hover. */
+  .btn-line {
+    border: 1px solid var(--color-line);
+    color: var(--color-dim);
+    background: transparent;
+    transition:
+      border-color var(--t-hover) ease-out,
+      color var(--t-hover) ease-out;
+  }
+
+  .btn-line:hover {
+    border-color: var(--color-ac);
+    color: var(--color-ac);
+  }
+
+  .scan-site {
+    background: repeating-linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0px,
+      rgba(0, 0, 0, 0) 2px,
+      rgba(0, 0, 0, 0.28) 3px,
+      rgba(0, 0, 0, 0) 4px
+    );
+  }
+
+  .scan-boot {
+    background: repeating-linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0,
+      rgba(0, 0, 0, 0) 2px,
+      rgba(0, 0, 0, 0.4) 3px,
+      rgba(0, 0, 0, 0) 4px
+    );
+  }
+
+  .glow-edge {
+    box-shadow: 0 0 34px 10px rgba(255, 107, 26, 0.45);
+  }
+}
+
+@layer components {
+  /* ---- The screen the site is displayed on ---------------------------- */
+
+  .crt-glass {
+    will-change: opacity;
+  }
+
+  /* Corners bend away from the viewer, the way a tube's do. */
+  .crt-vignette {
+    background:
+      radial-gradient(
+        128% 96% at 50% 50%,
+        transparent 40%,
+        rgba(0, 0, 0, 0.34) 78%,
+        rgba(0, 0, 0, 0.72) 100%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(255, 107, 26, 0.035),
+        transparent 12%,
+        transparent 88%,
+        rgba(255, 107, 26, 0.035)
+      );
+  }
+
+  /* Recedes while the dossier is projected over it. */
+  .page-body {
+    opacity: var(--page-dim);
+    filter: blur(var(--page-blur));
+    transition:
+      opacity 320ms ease-out,
+      filter 320ms ease-out;
+  }
+
+  /* ---- Seven-segment readouts ----------------------------------------- */
+
+  /* Segments cross-fade rather than snapping, the way a real LCD's do as the
+     crystals relax. */
+  .seg {
+    transition: opacity 140ms ease-out;
+  }
+
+  /* The lit segments bloom into the glass in front of them. */
+  .lcd {
+    filter: drop-shadow(0 0 3px rgba(255, 107, 26, 0.5));
+  }
+
+  .lcd-cool {
+    filter: drop-shadow(0 0 3px rgba(139, 255, 176, 0.4));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .seg {
+      transition: none;
+    }
+  }
+
+  /* ---- Projects bay --------------------------------------------------- */
+
+  /* The gridded plate the carousel is cut into. */
+  .bay {
+    border: 1px solid var(--color-line);
+    background:
+      linear-gradient(
+        var(--color-line) 1px,
+        transparent 1px
+      )
+      0 0 / 100% 44px,
+      linear-gradient(90deg, var(--color-line) 1px, transparent 1px) 0 0 / 44px
+        100%,
+      radial-gradient(
+        120% 100% at 50% 0%,
+        rgba(255, 107, 26, 0.05),
+        transparent 70%
+      ),
+      var(--color-void);
+    box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.65);
+  }
+
+  /* The resting transform has to be a rule, not an inline style. anime.js's
+     layout engine mutes inline transforms to `none` so it can measure an
+     untransformed box, and it "restores" them by removing the inline value —
+     which deletes the centering outright. The constructor records on mount, so
+     an inline transform here is gone before the first paint and only comes
+     back once a transition has completed. Removal falling through to this rule
+     is what keeps the panels centred. */
+  .project-panel {
+    transform: translate(-50%, -50%) scale(var(--panel-scale, 1));
+    will-change: transform, opacity;
+  }
+
+  /* ---- Hologram dossier ----------------------------------------------- */
+
+  .holo {
+    border: 1px solid var(--color-ring-strong);
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 107, 26, 0.05),
+        rgba(14, 16, 17, 0.94) 18%,
+        rgba(14, 16, 17, 0.97)
+      );
+    box-shadow:
+      0 0 0 1px rgba(255, 107, 26, 0.08),
+      0 0 60px rgba(255, 107, 26, 0.16),
+      inset 0 0 40px rgba(255, 107, 26, 0.05);
+    transform-origin: center;
+  }
+
+  /* Projection lines across the panel face. */
+  .holo-scan {
+    background: repeating-linear-gradient(
+      180deg,
+      rgba(255, 181, 69, 0.05) 0px,
+      rgba(255, 181, 69, 0.05) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+    mix-blend-mode: screen;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page-body {
+      transition: none;
+    }
+  }
+}
+
+@layer components {
+  /* Buttons and links living in the bottom status bar. */
+  .status-action {
+    display: inline-block;
+    border: 1px solid var(--color-line);
+    color: var(--color-dim);
+    background: transparent;
+    padding: 3px 9px;
+    letter-spacing: 0.2em;
+    transition:
+      border-color var(--t-hover) ease-out,
+      color var(--t-hover) ease-out;
+  }
+
+  .status-action:hover {
+    border-color: var(--color-ink);
+    color: var(--color-ink);
+  }
+
+  .status-action:disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+}

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ac:#ff6b1a;--ac2:#8bffb0;--bg:#08090a;--panel:#0e1011;--ink:#e9e6dd;--dim:#6d716f;--line:rgba(233,230,221,.13);--scan:.5}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'JetBrains Mono',ui-monospace,monospace;-webkit-font-smoothing:antialiased}
+a{color:var(--ac);text-decoration:none}
+a:hover{color:var(--ink)}
+::selection{background:var(--ac);color:#000}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes sweep{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}}
+@keyframes flick{0%,100%{opacity:.85}45%{opacity:.55}47%{opacity:.95}}
+@keyframes ring{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+@keyframes reveal{from{transform:translateY(0)}to{transform:translateY(-100%)}}
+@keyframes fadeup{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:none}}
+html{scroll-behavior:smooth}
+</style>
+</helmet>
+
+<div style="position:relative;min-height:100vh;background:var(--bg)">
+
+<div style="position:fixed;inset:0;z-index:5;pointer-events:none;opacity:var(--scan);background:repeating-linear-gradient(180deg,rgba(0,0,0,0) 0px,rgba(0,0,0,0) 2px,rgba(0,0,0,.28) 3px,rgba(0,0,0,0) 4px)"></div>
+
+<header style="position:fixed;top:0;left:0;right:0;z-index:4;display:flex;align-items:center;gap:18px;height:44px;padding:0 18px;background:rgba(8,9,10,.86);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)">
+  <div style="display:flex;align-items:center;gap:9px">
+    <div style="width:13px;height:13px;background:var(--ac);clip-path:polygon(50% 0,100% 100%,0 100%)"></div>
+    <span style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:.26em;font-size:13px">V. DANG</span>
+  </div>
+  <nav style="display:flex;gap:2px;margin-left:auto">
+    <a href="#about" style="font-size:10.5px;letter-spacing:.18em;padding:6px 11px;color:var(--dim)" style-hover="color:var(--ink);background:rgba(255,107,26,.1)">01 ABOUT</a>
+    <a href="#projects" style="font-size:10.5px;letter-spacing:.18em;padding:6px 11px;color:var(--dim)" style-hover="color:var(--ink);background:rgba(255,107,26,.1)">02 PROJECTS</a>
+    <a href="#writing" style="font-size:10.5px;letter-spacing:.18em;padding:6px 11px;color:var(--dim)" style-hover="color:var(--ink);background:rgba(255,107,26,.1)">03 WRITING</a>
+    <a href="#resume" style="font-size:10.5px;letter-spacing:.18em;padding:6px 11px;color:var(--dim)" style-hover="color:var(--ink);background:rgba(255,107,26,.1)">04 RECORD</a>
+    <a href="#contact" style="font-size:10.5px;letter-spacing:.18em;padding:6px 11px;color:var(--dim)" style-hover="color:var(--ink);background:rgba(255,107,26,.1)">05 CONTACT</a>
+  </nav>
+</header>
+
+<main style="max-width:1180px;margin:0 auto;padding:44px 28px 0">
+
+<sc-if value="{{ layoutA }}" hint-placeholder-val="{{ true }}">
+<section style="display:grid;grid-template-columns:1fr 300px;gap:34px;padding:74px 0 60px;border-bottom:1px solid var(--line)">
+  <div>
+    <div style="display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.3em;color:var(--ac)">
+      <span style="width:22px;height:1px;background:var(--ac)"></span>OPERATOR RECORD / 001
+    </div>
+    <h1 style="font-family:Oswald,sans-serif;font-weight:300;font-size:82px;line-height:.94;margin:20px 0 0;letter-spacing:-.01em">VIET-ANH<br><span style="font-weight:600">DANG</span></h1>
+    <p style="max-width:52ch;font-size:13.5px;line-height:1.85;color:#b4b1a8;margin:26px 0 0;text-wrap:pretty">CS student at UT Austin, minoring in Statistics &amp; Data Science and Business. Undergraduate researcher at the Oden Institute working on machine learning for geophysical data, and Engineering Fellow at the Texas Product Engineering Organization. I build full-stack platforms and research tooling.</p>
+    <div style="display:flex;gap:10px;margin-top:30px">
+      <a href="#projects" style="font-size:11px;letter-spacing:.2em;padding:12px 22px;border:1px solid var(--ac);color:var(--ac)" style-hover="background:var(--ac);color:#000">VIEW PROJECTS →</a>
+      <a href="#contact" style="font-size:11px;letter-spacing:.2em;padding:12px 22px;border:1px solid var(--line);color:var(--dim)" style-hover="border-color:var(--ink);color:var(--ink)">CONTACT</a>
+    </div>
+  </div>
+  <aside style="border:1px solid var(--line);background:var(--panel);padding:16px 16px 18px">
+    <div style="font-size:9.5px;letter-spacing:.26em;color:var(--dim);padding-bottom:10px;border-bottom:1px solid var(--line)">STATUS PANEL</div>
+    <div style="display:grid;gap:11px;margin-top:14px;font-size:10.5px">
+      <div style="display:flex;justify-content:space-between"><span style="color:var(--dim)">LOCATION</span><span>AUSTIN, TX</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="color:var(--dim)">CLASS</span><span>B.S. CS / 2028</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="color:var(--dim)">STATUS</span><span style="color:var(--ac2)">● AVAILABLE</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="color:var(--dim)">LOCAL TIME</span><span>{{ clock }}</span></div>
+    </div>
+    <div style="margin-top:18px;font-size:9.5px;letter-spacing:.22em;color:var(--dim)">SYNC RATIO</div>
+    <div style="display:flex;align-items:baseline;gap:8px;margin-top:4px">
+      <span style="font-family:Oswald,sans-serif;font-size:36px;font-weight:500;color:var(--ac);line-height:1;font-variant-numeric:tabular-nums">{{ liveText }}</span><span style="font-size:11px;color:var(--dim)">%</span>
+    </div>
+    <div style="height:4px;background:rgba(255,255,255,.07);margin-top:8px"><div style="{{ liveBar }}"></div></div>
+    <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:3px;margin-top:16px">
+      <div style="height:14px;background:var(--ac);opacity:.9"></div><div style="height:14px;background:var(--ac);opacity:.75"></div><div style="height:14px;background:var(--ac);opacity:.6"></div><div style="height:14px;background:rgba(255,255,255,.08)"></div><div style="height:14px;background:var(--ac2);opacity:.7"></div><div style="height:14px;background:rgba(255,255,255,.08)"></div><div style="height:14px;background:rgba(255,255,255,.08)"></div><div style="height:14px;background:var(--ac);opacity:.5"></div><div style="height:14px;background:rgba(255,255,255,.08)"></div><div style="height:14px;background:var(--ac2);opacity:.4"></div><div style="height:14px;background:rgba(255,255,255,.08)"></div><div style="height:14px;background:var(--ac);opacity:.3"></div>
+    </div>
+  </aside>
+</section>
+</sc-if>
+
+<sc-if value="{{ layoutB }}" hint-placeholder-val="{{ false }}">
+<section style="position:relative;padding:96px 0 64px;border-bottom:1px solid var(--line);text-align:center;overflow:hidden">
+  <div style="position:absolute;top:40px;left:50%;transform:translateX(-50%);width:420px;height:420px;border:1px solid rgba(255,107,26,.18);border-radius:50%;animation:ring 44s linear infinite"><div style="position:absolute;top:-4px;left:50%;width:7px;height:7px;background:var(--ac);transform:translateX(-50%)"></div></div>
+  <div style="position:relative">
+    <div style="font-size:10px;letter-spacing:.44em;color:var(--ac)">TERMINAL 001 / OPERATOR FILE</div>
+    <h1 style="font-family:Oswald,sans-serif;font-weight:200;font-size:116px;line-height:.9;margin:22px 0 0;letter-spacing:.02em">VIET-ANH <span style="font-weight:600">DANG</span></h1>
+    <div style="width:100%;max-width:640px;margin:26px auto 0;height:1px;background:linear-gradient(90deg,transparent,var(--ac),transparent)"></div>
+    <p style="max-width:56ch;margin:24px auto 0;font-size:13.5px;line-height:1.85;color:#b4b1a8;text-wrap:pretty">CS student at UT Austin. Machine learning research at the Oden Institute, full-stack platforms, and research tooling.</p>
+    <div style="display:flex;justify-content:center;gap:34px;margin-top:38px;font-size:10px;letter-spacing:.22em;color:var(--dim)">
+      <span>AUSTIN, TX</span><span style="color:var(--line)">/</span><span>B.S. CS 2028</span><span style="color:var(--line)">/</span><span style="color:var(--ac2)">● AVAILABLE</span><span style="color:var(--line)">/</span><span>{{ clock }}</span>
+    </div>
+  </div>
+</section>
+</sc-if>
+
+<sc-if value="{{ layoutC }}" hint-placeholder-val="{{ false }}">
+<section style="padding:70px 0 58px;border-bottom:1px solid var(--line)">
+  <div style="border:1px solid var(--line);background:var(--panel)">
+    <div style="display:flex;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--line);font-size:9.5px;letter-spacing:.24em;color:var(--dim)"><span>FILE / OPERATOR_DANG.V</span><span style="color:var(--ac)">CLASSIFICATION: OPEN</span></div>
+    <div style="display:grid;grid-template-columns:1.5fr 1fr">
+      <div style="padding:34px 30px;border-right:1px solid var(--line)">
+        <h1 style="font-family:Oswald,sans-serif;font-weight:400;font-size:60px;line-height:1;margin:0;letter-spacing:.01em">VIET-ANH DANG</h1>
+        <p style="max-width:48ch;font-size:13px;line-height:1.85;color:#b4b1a8;margin:20px 0 0;text-wrap:pretty">CS student at UT Austin. ML research at the Oden Institute, full-stack platforms, and research tooling.</p>
+        <div style="display:flex;gap:10px;margin-top:26px">
+          <a href="#projects" style="font-size:11px;letter-spacing:.2em;padding:11px 20px;border:1px solid var(--ac);color:var(--ac)" style-hover="background:var(--ac);color:#000">PROJECTS →</a>
+          <a href="#resume" style="font-size:11px;letter-spacing:.2em;padding:11px 20px;border:1px solid var(--line);color:var(--dim)" style-hover="border-color:var(--ink);color:var(--ink)">RECORD</a>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-rows:repeat(4,1fr)">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--line)"><div style="font-size:9px;letter-spacing:.24em;color:var(--dim)">LOCATION</div><div style="font-family:Oswald,sans-serif;font-size:22px;margin-top:3px">AUSTIN, TX</div></div>
+        <div style="padding:14px 18px;border-bottom:1px solid var(--line)"><div style="font-size:9px;letter-spacing:.24em;color:var(--dim)">GRADUATION</div><div style="font-family:Oswald,sans-serif;font-size:22px;margin-top:3px">MAY 2028</div></div>
+        <div style="padding:14px 18px;border-bottom:1px solid var(--line)"><div style="font-size:9px;letter-spacing:.24em;color:var(--dim)">STATUS</div><div style="font-family:Oswald,sans-serif;font-size:22px;margin-top:3px;color:var(--ac2)">AVAILABLE</div></div>
+        <div style="padding:14px 18px"><div style="font-size:9px;letter-spacing:.24em;color:var(--dim)">LOCAL TIME</div><div style="font-family:Oswald,sans-serif;font-size:22px;margin-top:3px">{{ clock }}</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+</sc-if>
+
+<section id="about" style="display:grid;grid-template-columns:180px 1fr;gap:34px;padding:56px 0;border-bottom:1px solid var(--line);scroll-margin-top:60px">
+  <div style="font-size:10px;letter-spacing:.28em;color:var(--ac)">01 / ABOUT</div>
+  <div>
+    <p style="max-width:64ch;font-size:14px;line-height:1.9;color:#c8c5bc;margin:0;text-wrap:pretty">I study computer science at UT Austin, with minors in Statistics &amp; Data Science and Business. At the Oden Institute I work with Dr. Sergey Fomel on machine learning for geophysical data, and I'm one of ten Engineering Fellows at the Texas Product Engineering Organization, building software for Austin nonprofits and startups.</p>
+    <p style="max-width:64ch;font-size:14px;line-height:1.9;color:#c8c5bc;margin:18px 0 0;text-wrap:pretty">My projects tend to sit between research and infrastructure: a diffusion model for subsurface imaging, a club management platform in production use, a 300-mod Minecraft pack with its own balance tooling. Outside of that: jazz and blues guitar, hiking, and cooking.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:26px">
+      <span style="font-size:10px;letter-spacing:.16em;padding:6px 11px;border:1px solid var(--line);color:var(--dim)">PYTHON</span>
+      <span style="font-size:10px;letter-spacing:.16em;padding:6px 11px;border:1px solid var(--line);color:var(--dim)">TYPESCRIPT</span>
+      <span style="font-size:10px;letter-spacing:.16em;padding:6px 11px;border:1px solid var(--line);color:var(--dim)">NEXT.JS</span>
+      <span style="font-size:10px;letter-spacing:.16em;padding:6px 11px;border:1px solid var(--line);color:var(--dim)">PYTORCH</span>
+      <span style="font-size:10px;letter-spacing:.16em;padding:6px 11px;border:1px solid var(--line);color:var(--dim)">FASTAPI</span>
+      <span style="font-size:10px;letter-spacing:.16em;padding:6px 11px;border:1px solid var(--line);color:var(--dim)">POSTGRESQL</span>
+      <span style="font-size:10px;letter-spacing:.16em;padding:6px 11px;border:1px solid var(--line);color:var(--dim)">PRISMA</span>
+      <span style="font-size:10px;letter-spacing:.16em;padding:6px 11px;border:1px solid var(--line);color:var(--dim)">DOCKER</span>
+    </div>
+  </div>
+</section>
+
+<section id="projects" style="display:grid;grid-template-columns:180px 1fr;gap:34px;padding:56px 0;border-bottom:1px solid var(--line);scroll-margin-top:60px">
+  <div style="font-size:10px;letter-spacing:.28em;color:var(--ac)">02 / PROJECTS</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div style="display:flex;flex-direction:column;border:1px solid var(--line);background:var(--panel);padding:20px" style-hover="border-color:var(--ac);background:#121415">
+      <div style="display:flex;justify-content:space-between;font-size:9.5px;letter-spacing:.22em;color:var(--dim)"><span>UNIT 01 — RESEARCH</span><span style="color:var(--ac)">IN PROGRESS</span></div>
+      <div style="font-family:Oswald,sans-serif;font-size:26px;font-weight:400;margin-top:12px;color:var(--ink)">GEOFWI</div>
+      <p style="font-size:12.5px;line-height:1.75;color:#a5a29a;margin:8px 0 0">A diffusion model that reconstructs full 2D subsurface velocity sections from a single 1D profile through an encoder-decoder architecture. Replaced a geometrically-stamped synthetic dataset with a genuine forward stratigraphic simulation pipeline, and fixed data leakage with a group-aware 70/15/15 split.</p>
+      <div style="font-size:10px;letter-spacing:.14em;color:var(--dim);margin-top:16px">PYTHON · PYTORCH · CNNs · JUN 2026 →</div>
+      <div style="display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
+        <a href="https://github.com/eon1999" target="_blank" rel="noreferrer" style="font-size:10px;letter-spacing:.18em;padding:8px 14px;border:1px solid var(--line);color:var(--dim)" style-hover="border-color:var(--ac);color:var(--ac)">SOURCE ↗</a>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;border:1px solid var(--line);background:var(--panel);padding:20px" style-hover="border-color:var(--ac);background:#121415">
+      <div style="display:flex;justify-content:space-between;font-size:9.5px;letter-spacing:.22em;color:var(--dim)"><span>UNIT 02 — PLATFORM</span><span style="color:var(--ac2)">MVP SHIPPED</span></div>
+      <div style="font-family:Oswald,sans-serif;font-size:26px;font-weight:400;margin-top:12px;color:var(--ink)">BEEHIVE</div>
+      <p style="font-size:12.5px;line-height:1.75;color:#a5a29a;margin:8px 0 0">Full-stack club management for volunteer organizations: hours tracking, carpool coordination, events, and attendance check-in. Event-centric data model with role-based permissions and multi-org membership. 23 passing tests, CI/CD through GitHub Actions and Vercel, packaged as an offline-capable PWA.</p>
+      <div style="font-size:10px;letter-spacing:.14em;color:var(--dim);margin-top:16px">NEXT.JS · TYPESCRIPT · POSTGRES · PRISMA · JUL 2026 →</div>
+      <div style="display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
+        <a href="https://github.com/eon1999" target="_blank" rel="noreferrer" style="font-size:10px;letter-spacing:.18em;padding:8px 14px;border:1px solid var(--line);color:var(--dim)" style-hover="border-color:var(--ac);color:var(--ac)">SOURCE ↗</a>
+        <a href="https://github.com/eon1999" target="_blank" rel="noreferrer" style="font-size:10px;letter-spacing:.18em;padding:8px 14px;border:1px solid var(--ac);color:var(--ac)" style-hover="background:var(--ac);color:#000">LIVE SITE ↗</a>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;border:1px solid var(--line);background:var(--panel);padding:20px" style-hover="border-color:var(--ac);background:#121415">
+      <div style="display:flex;justify-content:space-between;font-size:9.5px;letter-spacing:.22em;color:var(--dim)"><span>UNIT 03 — PLATFORM</span><span style="color:var(--ac2)">DEPLOYED</span></div>
+      <div style="font-family:Oswald,sans-serif;font-size:26px;font-weight:400;margin-top:12px;color:var(--ink)">UT-COMPASS</div>
+      <p style="font-size:12.5px;line-height:1.75;color:#a5a29a;margin:8px 0 0">Campus event recommendation platform for UT Austin. An automated pipeline scrapes 300+ HornsLink events daily, enriches them with zero-shot NLP classification and an LLM tagging layer, then ranks them in real time against profiles built from major, interests, and hobbies.</p>
+      <div style="font-size:10px;letter-spacing:.14em;color:var(--dim);margin-top:16px">NEXT.JS · FIREBASE · FASTAPI · DEBERTA · JAN 2026 →</div>
+      <div style="display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
+        <a href="https://github.com/eon1999" target="_blank" rel="noreferrer" style="font-size:10px;letter-spacing:.18em;padding:8px 14px;border:1px solid var(--line);color:var(--dim)" style-hover="border-color:var(--ac);color:var(--ac)">SOURCE ↗</a>
+        <a href="https://github.com/eon1999" target="_blank" rel="noreferrer" style="font-size:10px;letter-spacing:.18em;padding:8px 14px;border:1px solid var(--ac);color:var(--ac)" style-hover="background:var(--ac);color:#000">LIVE SITE ↗</a>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;border:1px solid var(--line);background:var(--panel);padding:20px" style-hover="border-color:var(--ac);background:#121415">
+      <div style="display:flex;justify-content:space-between;font-size:9.5px;letter-spacing:.22em;color:var(--dim)"><span>UNIT 04 — INFRASTRUCTURE</span><span style="color:var(--ac)">IN PROGRESS</span></div>
+      <div style="font-family:Oswald,sans-serif;font-size:26px;font-weight:400;margin-top:12px;color:var(--ink)">PROJECT PHTHISIS</div>
+      <p style="font-size:12.5px;line-height:1.75;color:#a5a29a;margin:8px 0 0">300+ independently-authored Minecraft mods integrated into one balanced system via overlay scripting rather than upstream patches, keeping upgrades reproducible. Includes a 475-entry balance spreadsheet with a drift-verification tool, and a dedicated Oracle Cloud server hosting the pack for players.</p>
+      <div style="font-size:10px;letter-spacing:.14em;color:var(--dim);margin-top:16px">KUBEJS · PYTHON · FORGE · UBUNTU · AUG 2026 →</div>
+      <div style="display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
+        <a href="https://github.com/eon1999" target="_blank" rel="noreferrer" style="font-size:10px;letter-spacing:.18em;padding:8px 14px;border:1px solid var(--line);color:var(--dim)" style-hover="border-color:var(--ac);color:var(--ac)">SOURCE ↗</a>
+      </div>
+    </div>
+    <div style="grid-column:1 / -1;display:flex;flex-direction:column;border:1px solid var(--line);background:var(--panel);padding:20px" style-hover="border-color:var(--ac);background:#121415">
+      <div style="display:flex;justify-content:space-between;font-size:9.5px;letter-spacing:.22em;color:var(--dim)"><span>UNIT 05 — PIPELINE</span><span style="color:var(--ac)">IN PROGRESS</span></div>
+      <div style="font-family:Oswald,sans-serif;font-size:26px;font-weight:400;margin-top:12px;color:var(--ink)">SATELLA</div>
+      <p style="font-size:12.5px;line-height:1.75;color:#a5a29a;margin:8px 0 0;max-width:80ch">An evidence-gathering pipeline that assembles sourced, human-checkable dossiers on public accounts rather than issuing automated verdicts. Five-source scraper architecture that fails soft and merges into unified per-subject records, with deterministic detection logic, source citations on every finding, and confidence floors against low-sample false positives.</p>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
+        <span style="font-size:10px;letter-spacing:.14em;color:var(--dim)">PYTHON · FASTAPI · WEB SCRAPING · MAY 2026 →</span>
+        <a href="https://github.com/eon1999" target="_blank" rel="noreferrer" style="font-size:10px;letter-spacing:.18em;padding:8px 14px;border:1px solid var(--line);color:var(--dim)" style-hover="border-color:var(--ac);color:var(--ac)">SOURCE ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="writing" style="display:grid;grid-template-columns:180px 1fr;gap:34px;padding:56px 0;border-bottom:1px solid var(--line);scroll-margin-top:60px">
+  <div style="font-size:10px;letter-spacing:.28em;color:var(--ac)">03 / WRITING</div>
+  <div style="display:grid">
+    <a href="#writing" style="display:grid;grid-template-columns:96px 1fr auto;gap:18px;align-items:baseline;padding:16px 8px;border-top:1px solid var(--line);color:var(--ink)" style-hover="background:rgba(255,107,26,.06);padding-left:14px">
+      <span style="font-size:10.5px;color:var(--dim)">2026.06.11</span>
+      <span style="font-size:14.5px">What a job queue actually loses under backpressure</span>
+      <span style="font-size:10px;color:var(--dim)">9 MIN</span>
+    </a>
+    <a href="#writing" style="display:grid;grid-template-columns:96px 1fr auto;gap:18px;align-items:baseline;padding:16px 8px;border-top:1px solid var(--line);color:var(--ink)" style-hover="background:rgba(255,107,26,.06);padding-left:14px">
+      <span style="font-size:10.5px;color:var(--dim)">2026.04.02</span>
+      <span style="font-size:14.5px">Writing a garbage collector taught me to read specs</span>
+      <span style="font-size:10px;color:var(--dim)">14 MIN</span>
+    </a>
+    <a href="#writing" style="display:grid;grid-template-columns:96px 1fr auto;gap:18px;align-items:baseline;padding:16px 8px;border-top:1px solid var(--line);color:var(--ink)" style-hover="background:rgba(255,107,26,.06);padding-left:14px">
+      <span style="font-size:10.5px;color:var(--dim)">2026.01.19</span>
+      <span style="font-size:14.5px">Three months of profiling, one line of change</span>
+      <span style="font-size:10px;color:var(--dim)">6 MIN</span>
+    </a>
+    <a href="#writing" style="display:grid;grid-template-columns:96px 1fr auto;gap:18px;align-items:baseline;padding:16px 8px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);color:var(--ink)" style-hover="background:rgba(255,107,26,.06);padding-left:14px">
+      <span style="font-size:10.5px;color:var(--dim)">2025.11.03</span>
+      <span style="font-size:14.5px">Notes on reading the Raft paper for the fourth time</span>
+      <span style="font-size:10px;color:var(--dim)">11 MIN</span>
+    </a>
+    <div style="margin-top:16px"><a href="#writing" style="font-size:10.5px;letter-spacing:.2em">ALL ENTRIES →</a></div>
+  </div>
+</section>
+
+<section id="resume" style="display:grid;grid-template-columns:180px 1fr;gap:34px;padding:56px 0;border-bottom:1px solid var(--line);scroll-margin-top:60px">
+  <div style="font-size:10px;letter-spacing:.28em;color:var(--ac)">04 / RECORD</div>
+  <div>
+    <div style="display:grid;grid-template-columns:130px 1fr;gap:18px;padding-bottom:20px;border-bottom:1px solid var(--line)">
+      <span style="font-size:10.5px;color:var(--dim);letter-spacing:.1em">FEB 2026 — PRESENT</span>
+      <div><div style="font-family:Oswald,sans-serif;font-size:20px">Undergraduate Research Assistant</div><div style="font-size:12px;color:var(--dim);margin-top:3px">Oden Institute for Computational Engineering &amp; Sciences</div><p style="font-size:13px;line-height:1.8;color:#a5a29a;margin:10px 0 0;max-width:58ch">Working with Dr. Sergey Fomel on transformers for geophysical data analysis. Developing GeoFWI alongside a post-doc, integrating with Dr. Fomel's legacy code and training on novel data. Applying the same techniques to problems in astronomy (PLAsTiCC) and environmental science (DS4G).</p></div>
+    </div>
+    <div style="display:grid;grid-template-columns:130px 1fr;gap:18px;padding:20px 0;border-bottom:1px solid var(--line)">
+      <span style="font-size:10.5px;color:var(--dim);letter-spacing:.1em">SEP 2025 — PRESENT</span>
+      <div><div style="font-family:Oswald,sans-serif;font-size:20px">Engineering Fellow</div><div style="font-size:12px;color:var(--dim);margin-top:3px">Texas Product Engineering Organization</div><p style="font-size:13px;line-height:1.8;color:#a5a29a;margin:10px 0 0;max-width:58ch">One of 10 fellows selected from over 250 applicants. Working on cross-functional teams building real-world solutions for Austin nonprofits and startups.</p></div>
+    </div>
+    <div style="display:grid;grid-template-columns:130px 1fr;gap:18px;padding:20px 0">
+      <span style="font-size:10.5px;color:var(--dim);letter-spacing:.1em">2024 — MAY 2028</span>
+      <div><div style="font-family:Oswald,sans-serif;font-size:20px">B.S. Computer Science</div><div style="font-size:12px;color:var(--dim);margin-top:3px">The University of Texas at Austin · Minors in Statistics &amp; Data Science, Business</div><p style="font-size:13px;line-height:1.8;color:#a5a29a;margin:10px 0 0;max-width:58ch">Data Structures, Computer Architecture, Operating Systems, Intro to Data Science, Game Design Paradigms.</p></div>
+    </div>
+    <a href="#resume" style="display:inline-block;margin-top:18px;font-size:11px;letter-spacing:.2em;padding:12px 22px;border:1px solid var(--ac);color:var(--ac)" style-hover="background:var(--ac);color:#000">DOWNLOAD CV (PDF) ↓</a>
+  </div>
+</section>
+
+<section id="contact" style="display:grid;grid-template-columns:180px 1fr;gap:34px;padding:56px 0 90px;scroll-margin-top:60px">
+  <div style="font-size:10px;letter-spacing:.28em;color:var(--ac)">05 / CONTACT</div>
+  <div>
+    <div style="font-family:Oswald,sans-serif;font-weight:300;font-size:44px;line-height:1.1">Open to summer 2027<br>internships.</div>
+    <a href="mailto:dangviet@utexas.edu" style="display:inline-block;font-family:'JetBrains Mono',monospace;font-size:17px;margin-top:22px;border-bottom:1px solid var(--ac);padding-bottom:3px">dangviet@utexas.edu</a>
+    <div style="font-size:13px;color:var(--dim);margin-top:12px">713-834-4047</div>
+    <div style="display:flex;gap:22px;margin-top:28px;font-size:10.5px;letter-spacing:.2em">
+      <a href="https://github.com/eon1999" target="_blank" rel="noreferrer">GITHUB</a><a href="https://linkedin.com" target="_blank" rel="noreferrer">LINKEDIN</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer style="border-top:1px solid var(--line);padding:14px 18px;display:flex;justify-content:space-between;font-size:9.5px;letter-spacing:.22em;color:var(--dim)">
+  <span>© 2026 V. DANG — TERMINAL 001</span>
+  <span>REC {{ clock }}</span>
+</footer>
+
+<div style="position:fixed;left:0;bottom:0;right:0;z-index:4;display:flex;align-items:center;gap:14px;height:30px;padding:0 14px;background:rgba(8,9,10,.92);border-top:1px solid var(--line);font-size:9.5px;letter-spacing:.2em;color:var(--dim)">
+  <span style="color:var(--ac2)">● LINK NOMINAL</span>
+  <span>SCROLL {{ scrollPct }}</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+    <span>HOME LAYOUT</span>
+    <button onClick="{{ setA }}" style="{{ btnA }}">A</button>
+    <button onClick="{{ setB }}" style="{{ btnB }}">B</button>
+    <button onClick="{{ setC }}" style="{{ btnC }}">C</button>
+    <button onClick="{{ reboot }}" style="font:inherit;letter-spacing:.2em;background:none;border:1px solid var(--line);color:var(--dim);padding:3px 9px;cursor:pointer">REPLAY BOOT</button>
+  </div>
+</div>
+
+<sc-if value="{{ curtainVisible }}" hint-placeholder-val="{{ false }}">
+<div style="{{ curtainStyle }}" onAnimationEnd="{{ curtainDone }}">
+  <div style="{{ curtainEdge }}"></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ bootVisible }}" hint-placeholder-val="{{ true }}">
+<div style="{{ bootStyle }}">
+  <div style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(180deg,rgba(0,0,0,0) 0,rgba(0,0,0,0) 2px,rgba(0,0,0,.4) 3px,rgba(0,0,0,0) 4px)"></div>
+  <div style="position:absolute;left:0;right:0;height:120px;background:linear-gradient(180deg,transparent,rgba(255,107,26,.06),transparent);animation:sweep 5.5s linear infinite;pointer-events:none"></div>
+
+  <div style="position:absolute;top:22px;left:26px;width:26px;height:26px;border-left:1px solid var(--ac);border-top:1px solid var(--ac)"></div>
+  <div style="position:absolute;top:22px;right:26px;width:26px;height:26px;border-right:1px solid var(--ac);border-top:1px solid var(--ac)"></div>
+  <div style="position:absolute;bottom:22px;left:26px;width:26px;height:26px;border-left:1px solid var(--ac);border-bottom:1px solid var(--ac)"></div>
+  <div style="position:absolute;bottom:22px;right:26px;width:26px;height:26px;border-right:1px solid var(--ac);border-bottom:1px solid var(--ac)"></div>
+  <div style="position:absolute;top:30px;left:64px;font-size:9.5px;letter-spacing:.3em;color:var(--dim)">TERMINAL 001 — OPERATIONS INTERFACE</div>
+  <div style="position:absolute;top:30px;right:64px;font-size:9.5px;letter-spacing:.3em;color:var(--dim)">{{ clock }}</div>
+
+  <sc-if value="{{ idle }}" hint-placeholder-val="{{ true }}">
+  <div style="text-align:center">
+    <div style="width:150px;height:150px;margin:0 auto;position:relative">
+      <div style="position:absolute;inset:0;border:1px solid rgba(255,107,26,.35);border-radius:50%;animation:ring 18s linear infinite"><div style="position:absolute;top:-3px;left:50%;width:6px;height:6px;background:var(--ac);transform:translateX(-50%)"></div></div>
+      <div style="position:absolute;inset:26px;border:1px solid rgba(255,107,26,.2);border-radius:50%"></div>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><div style="width:28px;height:28px;background:var(--ac);clip-path:polygon(50% 0,100% 100%,0 100%);animation:flick 3s infinite"></div></div>
+    </div>
+    <div style="font-family:Oswald,sans-serif;font-weight:300;font-size:52px;letter-spacing:.18em;margin-top:34px;color:var(--ink)">STANDBY</div>
+    <div style="font-size:11px;letter-spacing:.34em;color:var(--dim);margin-top:8px">OPERATOR RECORD — V. DANG</div>
+    <button onClick="{{ start }}" style="margin-top:44px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.28em;color:var(--ac);background:none;border:1px solid var(--ac);padding:16px 34px;cursor:pointer" style-hover="background:var(--ac);color:#000">PRESS [ ENTER ] TO INITIATE</button>
+    <div style="font-size:9.5px;letter-spacing:.24em;color:var(--dim);margin-top:16px;animation:blink 1.2s step-end infinite">AWAITING OPERATOR INPUT</div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ running }}" hint-placeholder-val="{{ false }}">
+  <div style="width:min(760px,86vw)">
+    <div style="display:flex;justify-content:space-between;align-items:baseline">
+      <div style="font-family:Oswald,sans-serif;font-size:34px;letter-spacing:.14em;color:var(--ac)">{{ phaseLabel }}</div>
+      <div style="font-size:11px;letter-spacing:.24em;color:var(--dim)">SEQUENCE {{ pctText }}</div>
+    </div>
+    <div style="height:3px;background:rgba(255,255,255,.08);margin-top:12px"><div style="{{ barStyle }}"></div></div>
+    <div style="height:250px;overflow:hidden;margin-top:22px;border:1px solid var(--line);background:rgba(255,255,255,.015);padding:14px 16px">
+      <sc-for list="{{ logs }}" as="log" hint-placeholder-count="5">
+        <div style="font-size:12px;line-height:1.75;animation:fadeup .18s ease-out"><span style="color:var(--dim)">{{ log.t }}</span> <span style="color: {{ log.c }}">{{ log.m }}</span></div>
+      </sc-for>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+      <div style="display:flex;gap:26px;font-size:10px;letter-spacing:.2em;color:var(--dim)"><span>PWR <span style="color:var(--ac2)">OK</span></span><span>LINK <span style="color:var(--ac2)">OK</span></span><span>SYNC <span style="color:var(--ac)">{{ syncText }}</span></span></div>
+      <button onClick="{{ skip }}" style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.24em;background:none;border:1px solid var(--line);color:var(--dim);padding:8px 16px;cursor:pointer" style-hover="border-color:var(--ink);color:var(--ink)">SKIP →</button>
+    </div>
+  </div>
+  </sc-if>
+</div>
+</sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#ff6b1a&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#ff6b1a&quot;,&quot;#8bffb0&quot;,&quot;#c8b4ff&quot;,&quot;#ff3b30&quot;],&quot;section&quot;:&quot;Theme&quot;},&quot;scanlines&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;layout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;A&quot;,&quot;options&quot;:[&quot;A&quot;,&quot;B&quot;,&quot;C&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Homepage&quot;}}">
+const SEQ = [
+  [0,    "boot", "power bus ....................... nominal"],
+  [260,  "boot", "coolant loop A/B ................ nominal"],
+  [520,  "boot", "loading operator record 001"],
+  [820,  "ok",   "record found: DANG, VIET-ANH"],
+  [1120, "boot", "entry plug ...................... locked"],
+  [1420, "boot", "LCL pressure .................... 1.04 atm"],
+  [1700, "warn", "harmonics drifting — recalibrating"],
+  [2050, "ok",   "harmonics ....................... stable"],
+  [2350, "boot", "establishing neural link"],
+  [2700, "ok",   "link established — sync ratio rising"],
+  [3100, "boot", "mounting /projects /writing /record"],
+  [3400, "ok",   "all sectors mounted"],
+  [3750, "ok",   "INTERFACE READY — RELEASING CONTROL"]
+];
+const COL = { boot: "#a5a29a", ok: "#8bffb0", warn: "#ffb545" };
+
+class Component extends DCLogic {
+  state = { phase: "idle", logs: [], pct: 0, sync: 0, clock: "", scrollPct: "00%", layout: "A" };
+
+  componentDidMount() {
+    this.tick();
+    this._clk = setInterval(() => this.tick(), 1000);
+    this._key = (e) => {
+      if (this.state.phase === "idle" && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); this.start(); }
+      else if (this.state.phase === "running" && e.key === "Escape") this.skip();
+    };
+    window.addEventListener("keydown", this._key);
+    this._scr = () => {
+      const h = document.documentElement;
+      const p = Math.round((h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) * 100);
+      this.setState({ scrollPct: String(Math.min(100, p)).padStart(2, "0") + "%" });
+    };
+    window.addEventListener("scroll", this._scr, { passive: true });
+    if (this.props.layout) this.setState({ layout: this.props.layout });
+    this.applyVars();
+  }
+  componentDidUpdate() { this.applyVars(); }
+  componentWillUnmount() {
+    clearInterval(this._clk); clearInterval(this._sy);
+    (this._timers || []).forEach(clearTimeout);
+    window.removeEventListener("keydown", this._key);
+    window.removeEventListener("scroll", this._scr);
+  }
+  applyVars() {
+    const r = document.documentElement.style;
+    r.setProperty("--ac", this.props.accent || "#ff6b1a");
+    r.setProperty("--scan", this.props.scanlines === false ? "0" : "0.5");
+    document.body.style.overflow = (this.state.phase === "done" && !this.state.curtain) ? "" : "hidden";
+  }
+  tick() {
+    const d = new Date();
+    this.setState({ clock: d.toTimeString().slice(0, 8) });
+  }
+  start() {
+    if (this.state.phase !== "idle") return;
+    this.setState({ phase: "running", logs: [], pct: 0, sync: 0 });
+    const total = SEQ[SEQ.length - 1][0] + 700;
+    this._timers = SEQ.map(([at, kind, msg]) => setTimeout(() => {
+      const t = "[" + (at / 1000).toFixed(2).padStart(5, "0") + "]";
+      this.setState(s => ({
+        logs: s.logs.concat([{ t, m: msg, c: COL[kind] }]).slice(-11),
+        pct: Math.round((at / total) * 100)
+      }));
+    }, at));
+    this._sy = setInterval(() => this.setState(s => ({ sync: Math.min(64.7, s.sync + 1.9) })), 90);
+    this._timers.push(setTimeout(() => this.finish(), total + 500));
+  }
+  skip() { (this._timers || []).forEach(clearTimeout); this.finish(); }
+  finish() {
+    clearInterval(this._sy);
+    this.setState({ phase: "done", pct: 100, sync: 64.7, curtain: "in" });
+    this._seq = [
+      setTimeout(() => this.setState({ curtain: "black" }), 40),
+      setTimeout(() => this.setState({ hidden: true }), 620),
+      setTimeout(() => this.setState({ curtain: "up" }), 900)
+    ];
+    this._fallback = setTimeout(() => { this.setState({ curtain: null }); this.startLive(); }, 4000);
+  }
+  startLive() {
+    clearInterval(this._lv);
+    this._lv = setInterval(() => this.setState(s => {
+      const drift = (Math.random() - 0.48) * 0.9;
+      return { live: Math.max(58.2, Math.min(71.4, (s.live || 64.7) + drift)) };
+    }), 160);
+  }
+  reboot() {
+    clearInterval(this._sy); (this._timers || []).forEach(clearTimeout);
+    window.scrollTo(0, 0);
+    (this._seq || []).forEach(clearTimeout);
+    clearTimeout(this._fallback);
+    clearInterval(this._lv);
+    this.setState({ phase: "idle", logs: [], pct: 0, sync: 0, hidden: false, curtain: null, live: 64.7 });
+  }
+  btn(k) {
+    const on = this.state.layout === k;
+    return "font:inherit;letter-spacing:.2em;padding:3px 9px;cursor:pointer;background:" +
+      (on ? "var(--ac)" : "none") + ";color:" + (on ? "#000" : "var(--dim)") +
+      ";border:1px solid " + (on ? "var(--ac)" : "var(--line)");
+  }
+  renderVals() {
+    const { phase, layout, curtain } = this.state;
+    const live = this.state.live == null ? 64.7 : this.state.live;
+    const EASE = "1.25s cubic-bezier(.76,0,.24,1) forwards";
+    const cbase = "position:fixed;inset:0;z-index:21;pointer-events:none;background:#040506;will-change:transform,opacity;transition:opacity .55s ease";
+    const cmap = {
+      in: cbase + ";opacity:0",
+      black: cbase + ";opacity:1",
+      up: cbase + ";opacity:1;animation:reveal " + EASE
+    };
+    const ebase = "position:fixed;left:0;right:0;z-index:22;height:2px;background:var(--ac);box-shadow:0 0 30px 8px rgba(255,107,26,.45);pointer-events:none";
+    return {
+      liveText: live.toFixed(1),
+      liveBar: "height:100%;width:" + live.toFixed(1) + "%;background:var(--ac);transition:width .16s linear",
+      curtainVisible: !!curtain,
+      curtainStyle: cmap[curtain] || cbase + ";opacity:0",
+      curtainEdge: "position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--ac);box-shadow:0 0 34px 10px rgba(255,107,26,.45);opacity:" + (curtain === "up" ? "1" : "0"),
+      curtainDone: () => { clearTimeout(this._fallback); this.setState({ curtain: null }); this.startLive(); },
+      clock: this.state.clock,
+      scrollPct: this.state.scrollPct,
+      bootVisible: !this.state.hidden,
+      idle: phase === "idle",
+      running: phase === "running",
+      logs: this.state.logs,
+      pctText: String(Math.min(100, this.state.pct)).padStart(3, "0") + "%",
+      syncText: this.state.sync.toFixed(1) + "%",
+      phaseLabel: this.state.pct > 80 ? "RELEASING" : this.state.pct > 40 ? "SYNCHRONIZING" : "INITIATING",
+      barStyle: "height:100%;width:" + Math.min(100, this.state.pct) + "%;background:var(--ac);transition:width .3s linear",
+      bootStyle: "position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;background:#040506;overflow:hidden" + (phase === "done" ? ";pointer-events:none" : ""),
+      start: () => this.start(),
+      skip: () => this.skip(),
+      reboot: () => this.reboot(),
+      setA: () => this.setState({ layout: "A" }),
+      setB: () => this.setState({ layout: "B" }),
+      setC: () => this.setState({ layout: "C" }),
+      btnA: this.btn("A"), btnB: this.btn("B"), btnC: this.btn("C"),
+      layoutA: layout === "A", layoutB: layout === "B", layoutC: layout === "C"
+    };
+  }
+}
+
+</script>
+</body>
+</html>
