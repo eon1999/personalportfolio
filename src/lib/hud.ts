@@ -24,6 +24,10 @@ export const HUD = {
   dossier: 380,
   /** Music panel open, same projector warm-up as the dossier. */
   panel: 380,
+  /** Split-flap leaf, hinge to seam — the drop. */
+  flapFall: 130,
+  /** And the seam to flat again — the slap. */
+  flapLand: 150,
 } as const;
 
 /**

@@ -52,6 +52,16 @@
   :root {
     --scan: 0.5;
     --t-hover: 160ms;
+
+    /* How large the two fixed bars are drawn. 1 is the size they were cut at;
+       the site ships at 1.5, and `SettingsPanel` writes the visitor's choice
+       straight onto the document. Everything that has to clear the chrome —
+       the content column, the HUD brackets, anchor scrolling — measures
+       itself from the two heights below rather than from a number of its
+       own, so a change here moves the whole cockpit at once. */
+    --chrome-scale: var(--chrome-scale-pref, 1.5);
+    --nav-h: calc(44px * var(--chrome-scale));
+    --status-h: calc(30px * var(--chrome-scale));
     /* How far the page recedes behind the project dossier. */
     --page-dim: 1;
     --page-blur: 0px;
@@ -64,6 +74,25 @@
     --ac-bloom:
       0 0 0.32em color-mix(in oklab, var(--color-ac) 55%, transparent),
       0 0 0.9em color-mix(in oklab, var(--color-ac) 30%, transparent);
+
+    /* The boot standby insignia's fire — restated as a movable background so
+       every accent surface can be cut from the same gradient instead of a
+       flat swatch. Stops mirror the `insignia-fire` `<linearGradient>` in
+       `Insignia.tsx`; sized well past 100% so `FireDrift` can slide the
+       visible window around without ever baring a hard edge. `--fire-x` /
+       `--fire-y` are the position `FireDrift` writes continuously — the
+       values here are just where the flame sits before that effect mounts,
+       and where it stays under reduced motion. */
+    --gradient-ac: linear-gradient(
+      135deg,
+      #ffe08a 0%,
+      #ffa53d 32%,
+      var(--color-ac) 68%,
+      #8f1c06 100%
+    );
+    --gradient-ac-size: 260% 260%;
+    --fire-x: 20%;
+    --fire-y: 30%;
   }
 
   /* sRGB has no more orange left to give: #ff6a00 already sits on the gamut
@@ -80,6 +109,8 @@
 
   html {
     scroll-behavior: smooth;
+    /* Fragment links land the section below the nav rather than under it. */
+    scroll-padding-top: calc(var(--nav-h) + 16px);
     /* Reserve the scrollbar's column at all times. The dossier locks scrolling
        by setting `overflow: hidden` on the body, which would otherwise pull the
        bar out from under the layout and shift the whole page sideways as the
@@ -92,6 +123,16 @@
   html.reticle-on,
   html.reticle-on * {
     cursor: none !important;
+  }
+
+  /* A phone is very nearly all chrome at 1x already — there is nothing to
+     magnify into, and a nav bar that outgrows the screen loses the board off
+     its right-hand edge. The visitor's choice is kept, it simply doesn't apply
+     at this width. */
+  @media (max-width: 560px) {
+    :root {
+      --chrome-scale: 1;
+    }
   }
 
   html.dossier-open {
@@ -107,6 +148,13 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Plain swatch, not the gradient: an anchor can wrap arbitrary nested
+     markup (icons, the split-flap board's own spans), and `color` is
+     inherited while `background-image` / `background-clip` are not — a
+     descendant would inherit `transparent` with nothing underneath to
+     reveal, and go invisible. Anchors that are verified plain text opt into
+     the gradient explicitly with `text-ac` instead (see `ContactSection`,
+     the about page's email link). */
   a {
     color: var(--color-ac);
     text-decoration: none;
@@ -253,8 +301,10 @@
      class of our own: `text-ac` is on 18 elements, `bg-ac` on 11, and adding a
      second class to each would have to be remembered at every new call site.
      The utilities set `color` / `background-color`, these set the shadow, so
-     the two compose instead of colliding — and both are struck from the same
-     `--color-ac`, so the token stays the single source. */
+     the two compose instead of colliding. `color` and `background-color`
+     themselves are redeclared further down, in `@layer utilities`, as the
+     moving fire gradient — see the note there for why that half has to live
+     in a different layer. */
   .text-ac {
     text-shadow: var(--ac-bloom);
   }
@@ -269,12 +319,29 @@
   }
 
   /* The amber index line above every section — `02 / PROJECTS`. Was 10px in
-     seven places before it was worth naming. */
+     seven places before it was worth naming. Not a Tailwind-generated
+     utility, so the gradient fill can sit right here rather than needing
+     the `@layer utilities` override `.text-ac` and `.bg-ac` do. */
   .section-marker {
     font-size: 13px;
     letter-spacing: 0.28em;
-    color: var(--color-ac);
     text-shadow: var(--ac-bloom);
+  }
+
+  /* Split from the rule above: `color` inherits into a nested span
+     (`DisplayText`, `SectionShell`'s wrapping) but `background-image` /
+     `background-clip` don't, so a marker built from nested markup needs its
+     own copy of the clip or its text goes transparent with nothing behind
+     it to reveal. See the identical note above `.text-ac`. */
+  .section-marker,
+  .section-marker * {
+    background-image: var(--gradient-ac);
+    background-size: var(--gradient-ac-size);
+    background-position: var(--fire-x) var(--fire-y);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
   }
 
   /* The insignia / wordmark triangle. */
@@ -300,19 +367,45 @@
     color: var(--color-dim);
   }
 
-  /* Amber outline, fills on hover. */
+  /* Amber outline, fills on hover. The border stays the flat swatch — a
+     hairline is too thin for a gradient to read on — but the label is cut
+     from `--gradient-ac`, clipped to the text rather than filling the box.
+     Split from the rule below and repeated onto `*` for the same reason as
+     `.text-ac`: a nested span (an icon label, `DisplayText`) would inherit
+     a transparent `color` with no gradient underneath it to clip to. Hover
+     resets both the element and its descendants back to a plain fill —
+     `background-clip` has to go back to `border-box` too, or the fill would
+     still be clipped to the old label's glyphs. */
+  .btn-ac,
+  .btn-ac * {
+    background-image: var(--gradient-ac);
+    background-size: var(--gradient-ac-size);
+    background-position: var(--fire-x) var(--fire-y);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
   .btn-ac {
     border: 1px solid var(--color-ac);
-    color: var(--color-ac);
-    background: transparent;
+    background-color: transparent;
     transition:
       background-color var(--t-hover) ease-out,
       color var(--t-hover) ease-out;
   }
 
-  .btn-ac:hover {
-    background: var(--color-ac);
+  .btn-ac:hover,
+  .btn-ac:hover * {
+    background-image: none;
+    background-clip: border-box;
+    -webkit-background-clip: border-box;
     color: #000;
+    -webkit-text-fill-color: #000;
+  }
+
+  .btn-ac:hover {
+    background-color: var(--color-ac);
   }
 
   /* Hairline outline, brightens to ink on hover. */
@@ -371,6 +464,70 @@
     box-shadow:
       0 0 14px 2px color-mix(in oklab, var(--color-ac) 55%, transparent),
       0 0 40px 12px color-mix(in oklab, var(--color-ac) 32%, transparent);
+  }
+}
+
+/* `text-ac` and `bg-ac` are Tailwind-generated utilities (from `--color-ac`
+   in `@theme`), which land in Tailwind's own `utilities` layer — the
+   highest-priority layer there is, above `base` and `components`
+   regardless of source order. A redeclaration in `@layer components` (see
+   above) can add properties Tailwind's version doesn't set, like the bloom
+   shadows, but it can never win a `color` / `background-color` fight
+   against it. Putting the override here instead, in the same layer,
+   resolves that the ordinary way: two rules of equal specificity in one
+   layer, later one wins.
+
+   `SegmentReadout`'s seven-segment digits opt out on purpose — their fill
+   is `currentColor`, and a transparent `color` would blank them. Their
+   default tone is `.text-ac-solid` below instead of `text-ac`, and the
+   settings gear borrows it too on hover for the same reason.
+
+   The `*` on both selectors matters: `color` inherits, but
+   `background-image` / `background-clip` do not, and several call sites
+   (`HeroName`'s glow layer, `BootRunning`'s phase label, the settings scale
+   picker) hold their actual text inside `DisplayText`'s own span, a level
+   below the classed element. Without it those descendants would inherit a
+   transparent `color` with no gradient underneath to clip to — the text
+   simply disappears. */
+@layer utilities {
+  .text-ac,
+  .text-ac * {
+    background-image: var(--gradient-ac);
+    background-size: var(--gradient-ac-size);
+    background-position: var(--fire-x) var(--fire-y);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .bg-ac {
+    background-image: var(--gradient-ac);
+    background-size: var(--gradient-ac-size);
+    background-position: var(--fire-x) var(--fire-y);
+  }
+
+  /* The flat swatch `text-ac` used to be, kept for `currentColor`
+     consumers. */
+  .text-ac-solid {
+    color: var(--color-ac);
+  }
+
+  /* An anchor carrying `text-ac` (`ContactSection`'s GITHUB / LINKEDIN, the
+     about page's email link) still falls through to the plain `a:hover`
+     rule in `@layer base` on hover — but that only sets `color`, and
+     `-webkit-text-fill-color` takes priority over `color` once
+     `background-clip: text` is in play, so the link would stay invisibly
+     clipped to a gradient it no longer has. This has to live in `utilities`
+     too, alongside `.text-ac`, or the layer order alone would bury it
+     regardless of the higher selector specificity. */
+  a.text-ac:hover,
+  a.text-ac:hover * {
+    background-image: none;
+    background-clip: border-box;
+    -webkit-background-clip: border-box;
+    color: var(--color-ink);
+    -webkit-text-fill-color: var(--color-ink);
   }
 }
 
@@ -504,6 +661,143 @@
 }
 
 @layer components {
+  /* ---- Split-flap board ------------------------------------------------
+     The section list, collapsed into one turning card. Built as a station
+     board is: two static halves with a hinge along the seam between them, and
+     a leaf that falls through 180 degrees carrying the old top on its front
+     and the new bottom on its back.
+
+     Every piece is the same pane — the whole line, laid out at full height and
+     cropped to one half of itself — so the type is set once and the two halves
+     cannot disagree about where the cut falls. It lands mid-glyph, which is
+     the point: that seam is what says the label is printed on something
+     physical rather than swapped out. */
+  .flap {
+    /* Bumps the card up to the nav buttons' height, width and letter-spacing
+       riding along with it since they're keyed off `--flap-h` / `em`. Border
+       stays a flat 1px — every hairline on the site does, scaled or not — so
+       only this one number needs retuning if the bottom edge still doesn't
+       land flush. */
+    --flap-scale: 1.15;
+    --flap-h: calc(20px * var(--flap-scale));
+    position: relative;
+    display: inline-block;
+    /* `inline-block` defaults to `baseline`, which leaves room below the box
+       for descenders in the surrounding line — invisible while the board's
+       own text was invisible, but it drops the card a couple of pixels below
+       where its box model alone would put it. The nav's other controls don't
+       have this problem: they lay their content out with `flex`, not an
+       inline baseline. */
+    vertical-align: top;
+    border: 1px solid var(--color-line);
+    padding: 0 calc(7px * var(--flap-scale));
+    font-size: calc(9px * var(--flap-scale));
+    letter-spacing: 0.14em;
+    color: var(--color-ink);
+    /* Shallow enough that the leaf visibly leans out of the board as it goes
+       over, which is the whole tell that it is a card and not a cross-fade. */
+    perspective: 90px;
+  }
+
+  /* Laid out for real and then hidden: the board is exactly as wide as the
+     longest thing it can be asked to show, whatever the type is doing. */
+  .flap-sizer {
+    display: block;
+    height: var(--flap-h);
+    visibility: hidden;
+  }
+
+  .flap-pane {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: calc(var(--flap-h) / 2);
+    overflow: hidden;
+    background: var(--color-void);
+    backface-visibility: hidden;
+  }
+
+  .flap-pane.crop-top {
+    top: 0;
+  }
+
+  .flap-pane.crop-bottom {
+    bottom: 0;
+  }
+
+  .flap-line {
+    display: block;
+    height: var(--flap-h);
+    line-height: var(--flap-h);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* The line is drawn at full height in both halves and slid up in the lower
+     one, so both are cut from the same setting. */
+  .crop-bottom > .flap-line {
+    transform: translateY(calc(var(--flap-h) / -2));
+  }
+
+  /* No `will-change` here on purpose: the leaf only exists for the quarter
+     second it is turning, so there is nothing to promote ahead of, and a
+     promoted layer inside a zoomed bar rasterises at the bar's 1x size — the
+     card would go soft against two crisp halves. */
+  .flap-leaf {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: calc(var(--flap-h) / 2);
+    transform-style: preserve-3d;
+  }
+
+  /* Hinged along the seam, from whichever side it is falling. */
+  .flap-leaf.is-top {
+    top: 0;
+    transform-origin: bottom;
+  }
+
+  .flap-leaf.is-bottom {
+    bottom: 0;
+    transform-origin: top;
+  }
+
+  .flap-leaf > .flap-pane {
+    top: 0;
+    bottom: 0;
+  }
+
+  .flap-leaf > .is-back {
+    transform: rotateX(180deg);
+  }
+
+  /* The hinge rail, over everything — including the leaf, which passes behind
+     it the way a real one passes behind its spindle. */
+  .flap-seam {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(50% - 0.5px);
+    height: 1px;
+    background: rgba(0, 0, 0, 0.75);
+    box-shadow: 0 1px 0 color-mix(in oklab, var(--color-ac) 10%, transparent);
+  }
+
+  /* ---- Chrome scale ----------------------------------------------------
+     The nav and the status bar are drawn once, at the size everything in them
+     was tuned for, and then magnified as a unit — the equalizer, the seven
+     segment readouts, the hairlines and the tracking all come up together
+     instead of each needing a rule per step.
+
+     `zoom` rather than `transform: scale`, deliberately. Zoom re-runs layout
+     at the new size, so the type is rasterised for the size it is displayed
+     at and the bar still resolves `inset-x-0` against the viewport. A scaled
+     transform would magnify a 1x raster and leave a bar three screens wide at
+     3x, anchored off the left edge. */
+  .chrome-bar {
+    zoom: var(--chrome-scale);
+  }
+
   /* Buttons and links living in the bottom status bar. */
   .status-action {
     display: inline-block;

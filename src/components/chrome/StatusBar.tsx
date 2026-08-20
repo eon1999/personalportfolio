@@ -12,7 +12,7 @@ export function StatusBar({ scrollProgress, children }: StatusBarProps) {
   const digits = scrollProgress.replace("%", "").padStart(3, "0");
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-[4] flex h-[30px] items-center gap-[14px] border-t border-line bg-chrome-bottom px-[14px] text-[9.5px] tracking-[.2em] text-dim">
+    <div className="chrome-bar fixed inset-x-0 bottom-0 z-[4] flex h-[30px] items-center gap-[14px] border-t border-line bg-chrome-bottom px-[14px] text-[9.5px] tracking-[.2em] text-dim">
       <span className="text-ac2">● LINK NOMINAL</span>
 
       <span className="flex items-center gap-[6px]">

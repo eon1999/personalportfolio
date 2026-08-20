@@ -33,6 +33,7 @@ src/
     chrome/       SiteFrame, fixed nav, status bar, footer, scanlines
     hero/         the home hero
     sections/     about, projects, writing feed, record, contact, page header
+    settings/     the gear card — chrome scale, and whatever comes next
     ui/           shared primitives
   data/           all copy, the boot log script, gate copy
   hooks/          clock, scroll progress, scroll lock, boot sequence, reveal state
@@ -63,6 +64,10 @@ Two libraries, split by job.
 - `gate/ReplayCover` — home back to boot, the uncover run backwards: the same
   stagger with `reversed: true`, so tiles close in from the edges to the centre,
   then a solid layer seals and hands over to the flickering standby panel.
+- `chrome/FlapDisplay` — the section board in the nav. Two static halves and a
+  leaf hinged along the seam between them: it drops to the hinge under `in(2)`
+  and slaps flat under `out(3)`, carrying the old top on its front and the new
+  bottom on its back. Timings are `flapFall` / `flapLand` in `src/lib/hud.ts`.
 
 All cue points live in `src/lib/gate.ts` — that's the file to edit to retime any
 of it. Every gate unmounts on its timeline's `onComplete`, never on a timer; the
@@ -86,6 +91,15 @@ client-side navigation but resets on reload, which draws the line exactly where
 it should: reloading `/` plays the full cold boot, while coming back from
 `/about` drops you straight onto the site. Nav links are absolute (`/#about`) so
 they resolve from any route.
+
+The five section links are one split-flap card rather than a row — five labels
+do not fit across a nav bar the visitor is allowed to scale up. The board
+follows the page on its own (`useActiveSection`: the last section past 30% of
+the viewport wins, and the bottom of the document always wins outright, since
+the closing section is too short to ever climb that far) and the pair of arrows
+beside it are ordinary links to the sections either side, so scrolling is the
+only thing that ever turns it. On a
+sub-page, where none of those sections are mounted, the board names the page.
 
 ## Interaction
 
@@ -112,8 +126,14 @@ Everything spec'd in the handoff is matched at desktop widths. Changes:
 5. **Focus-visible** styling added (amber outline) — the prototype had none.
 6. **`DOWNLOAD CV (PDF) ↓`** points at `/VietResume.pdf`; the prototype had no
    target.
-7. A 30px bottom pad on the page wrapper keeps the footer clear of the fixed
-   status bar.
+7. The page wrapper's bottom pad keeps the footer clear of the fixed status
+   bar, and follows it up and down as the chrome is rescaled.
+8. **Chrome scale.** The nav and the status bar are drawn at the prototype's
+   size and then magnified as a unit — 1x, 1.5x (the default) or 2x — from the
+   gear in the nav. The number lives on the document as `--chrome-scale`; the
+   bars read it through `zoom`, and everything that has to clear them measures
+   from `--nav-h` / `--status-h`. It is remembered in `localStorage` and
+   restored by a blocking one-liner in the layout, ahead of the first paint.
 
 ## Content still to resolve
 

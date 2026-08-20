@@ -14,7 +14,7 @@ export function HudFrame() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-x-[10px] top-[54px] bottom-[40px] z-[5]"
+      className="pointer-events-none fixed inset-x-[10px] top-[calc(var(--nav-h)+10px)] bottom-[calc(var(--status-h)+10px)] z-[5]"
     >
       <Corner className="left-0 top-0 border-l border-t" />
       <Corner className="right-0 top-0 border-r border-t" />

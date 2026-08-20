@@ -24,7 +24,12 @@ interface SegmentReadoutProps {
   /** Skips the power-on self-test, for readouts that mount mid-page. */
   readonly quiet?: boolean;
   readonly className?: string;
-  /** Tailwind text colour class driving the lit segments. */
+  /**
+   * Tailwind text colour class driving the lit segments (`fill="currentColor"`
+   * on the SVG polygons below). Defaults to the flat swatch rather than
+   * `text-ac` — that utility is a clipped gradient with a transparent
+   * `color`, which `currentColor` would inherit straight into invisible.
+   */
   readonly tone?: string;
 }
 
@@ -45,7 +50,7 @@ export function SegmentReadout({
   label,
   quiet,
   className,
-  tone = "text-ac",
+  tone = "text-ac-solid",
 }: SegmentReadoutProps) {
   const rootRef = useRef<HTMLSpanElement>(null);
   const reduced = useReducedMotion();

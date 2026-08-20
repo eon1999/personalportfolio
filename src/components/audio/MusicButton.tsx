@@ -38,7 +38,7 @@ export function MusicButton() {
         </span>
         <span
           className={cn(
-            "hidden text-[8.5px] tracking-[.24em] wide:inline",
+            "hidden text-[8.5px] tracking-[.24em] @min-[380px]:inline",
             playing ? "text-ink" : "text-dim",
           )}
         >

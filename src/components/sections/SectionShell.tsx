@@ -20,7 +20,7 @@ export function SectionShell({
     <section
       id={id}
       className={cn(
-        "grid scroll-mt-[60px] grid-cols-1 gap-6 pt-14 wide:grid-cols-[180px_1fr] wide:gap-[34px]",
+        "grid scroll-mt-[calc(var(--nav-h)+16px)] grid-cols-1 gap-6 pt-14 wide:grid-cols-[180px_1fr] wide:gap-[34px]",
         last ? "pb-[90px]" : "border-b border-line pb-14",
       )}
     >

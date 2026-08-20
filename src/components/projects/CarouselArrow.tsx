@@ -65,7 +65,10 @@ export function CarouselArrow({
         ref={markRef}
         aria-hidden
         className={cn(
-          "tri block size-[19px] bg-ac/55 transition-colors duration-200 group-hover:bg-ac group-focus-visible:bg-ac",
+          // Element-level opacity rather than a colour-alpha modifier: `bg-ac`
+          // now paints a gradient image, and `bg-ac/55` would only fade the
+          // (invisible, underlying) solid-colour layer, not the image on top.
+          "tri block size-[19px] bg-ac opacity-55 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100",
           back ? "-rotate-90" : "rotate-90",
         )}
       />

@@ -34,7 +34,7 @@ export function SessionTimer() {
 
   return (
     <div
-      className="hidden items-center gap-[9px] border border-line px-[10px] py-[4px] sm:flex"
+      className="hidden items-center gap-[9px] border border-line px-[10px] py-[4px] @min-[640px]:flex"
       title="Time connected this session"
     >
       <span ref={dotRef} aria-hidden className="tri block size-[7px] bg-ac2" />

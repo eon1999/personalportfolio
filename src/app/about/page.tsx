@@ -77,7 +77,7 @@ export default function AboutPage() {
           <div>
             <a
               href={`mailto:${PROFILE.email}`}
-              className="inline-block border-b border-ac pb-[3px] font-mono text-[17px]"
+              className="inline-block border-b border-ac pb-[3px] font-mono text-[17px] text-ac"
             >
               {PROFILE.email}
             </a>

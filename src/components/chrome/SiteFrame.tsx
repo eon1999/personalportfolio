@@ -39,15 +39,16 @@ export function SiteFrame({
   useScatter(bodyRef);
 
   return (
-    // Bottom padding clears the fixed status bar.
-    <div className="relative min-h-screen bg-bg pb-[30px]">
+    // Bottom padding clears the fixed status bar, at whatever size it is
+    // currently drawn.
+    <div className="relative min-h-screen bg-bg pb-[var(--status-h)]">
       <MonitorOverlay />
       <HudFrame />
       <TopNav />
 
       {/* Everything below the chrome dims behind the project dossier. */}
       <div ref={bodyRef} className="page-body">
-        <main className="mx-auto max-w-[1180px] px-7 pt-11">
+        <main className="mx-auto max-w-[1180px] px-7 pt-[var(--nav-h)]">
           {render ? render(clock) : null}
           {children}
         </main>

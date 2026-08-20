@@ -18,7 +18,7 @@ export function ContactSection() {
       <p className="mt-[22px]">
         <a
           href={`mailto:${PROFILE.email}`}
-          className="inline-block border-b border-ac pb-[3px] font-mono text-[17px]"
+          className="inline-block border-b border-ac pb-[3px] font-mono text-[17px] text-ac"
         >
           {PROFILE.email}
         </a>
@@ -27,10 +27,10 @@ export function ContactSection() {
       <p className="mt-3 text-[13px] text-dim">{PROFILE.phone}</p>
 
       <div className="mt-7 flex flex-wrap gap-[22px] text-[10.5px] tracking-[.2em]">
-        <a href={LINKS.github} target="_blank" rel="noreferrer">
+        <a href={LINKS.github} target="_blank" rel="noreferrer" className="text-ac">
           GITHUB
         </a>
-        <a href={LINKS.linkedin} target="_blank" rel="noreferrer">
+        <a href={LINKS.linkedin} target="_blank" rel="noreferrer" className="text-ac">
           LINKEDIN
         </a>
       </div>

@@ -1,15 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { createPortal } from "react-dom";
-import { animate, createTimeline, stagger } from "animejs";
 import { TRACKS } from "@/data/tracks";
-import { HUD } from "@/lib/hud";
 import { formatClock } from "@/lib/jukebox";
-import { prefersReducedMotion } from "@/lib/prefs";
 import { cn } from "@/lib/cn";
 import { DisplayText } from "@/components/ui/DisplayText";
-import { useScrollLock } from "@/hooks/useScrollLock";
+import { useHoloPanel } from "@/hooks/useHoloPanel";
 import { CircularEqualizer } from "./CircularEqualizer";
 import { useJukeboxContext } from "./JukeboxProvider";
 
@@ -18,7 +15,7 @@ const BUTTON = "px-[16px] py-[9px] text-[10px] tracking-[.18em]";
 /**
  * The player, projected over the page — same treatment as a project dossier:
  * the field comes up, the panel snaps in from a squashed scanline, and
- * `.dossier-open` dims and blurs everything behind it.
+ * `.dossier-open` dims and blurs everything behind it. See `useHoloPanel`.
  *
  * The title sits inside the equalizer rather than beside it, so the ring reads
  * as the record it is playing rather than as decoration next to a label.
@@ -33,66 +30,7 @@ export function MusicPanel({ onClose }: { readonly onClose: () => void }) {
   const playing = status === "playing";
   const position = TRACKS.findIndex((t) => t.file === track?.file);
 
-  useScrollLock(true);
-
-  useEffect(() => {
-    const html = document.documentElement;
-    html.classList.add("dossier-open");
-    closeRef.current?.focus();
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.stopPropagation();
-        onClose();
-      }
-    };
-
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      html.classList.remove("dossier-open");
-    };
-  }, [onClose]);
-
-  useEffect(() => {
-    const backdrop = backdropRef.current;
-    const panel = panelRef.current;
-    if (!backdrop || !panel) return;
-
-    if (prefersReducedMotion()) {
-      animate([backdrop, panel], { opacity: 1, duration: 0 });
-      return;
-    }
-
-    const intro = createTimeline()
-      .add(backdrop, { opacity: [0, 1], duration: HUD.panel, ease: "outQuad" }, 0)
-      .add(
-        panel,
-        {
-          opacity: [0, 1, 0.55, 1],
-          scaleY: [0.02, 1],
-          scaleX: [1.04, 1],
-          duration: HUD.panel + 120,
-          ease: "out(3)",
-        },
-        60,
-      )
-      .add(
-        panel.querySelectorAll("[data-print]"),
-        {
-          opacity: [0, 1],
-          y: [7, 0],
-          duration: 340,
-          delay: stagger(52),
-          ease: "outQuad",
-        },
-        "-=140",
-      );
-
-    return () => {
-      intro.revert();
-    };
-  }, []);
+  useHoloPanel({ backdropRef, panelRef, focusRef: closeRef, onClose });
 
   const duration = track?.seconds ?? 0;
 
