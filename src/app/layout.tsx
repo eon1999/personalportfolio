@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
+import { JukeboxProvider } from "@/components/audio/JukeboxProvider";
 import "./globals.css";
 
 // The display face is Times New Roman — installed everywhere the site is
@@ -23,7 +24,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={jetbrainsMono.variable}>
-      <body>{children}</body>
+      <body>
+        <JukeboxProvider>{children}</JukeboxProvider>
+      </body>
     </html>
   );
 }

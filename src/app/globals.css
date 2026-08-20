@@ -526,4 +526,100 @@
     opacity: 0.4;
     pointer-events: none;
   }
+
+  /* Playing indicator. Bars are a fixed height scaled from the bottom rather
+     than an animated `height`, so the whole thing rides on the compositor and
+     never asks the status bar for a re-layout. */
+  .eq {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 1.5px;
+    height: 9px;
+    flex-shrink: 0;
+  }
+
+  .eq > span {
+    width: 2px;
+    height: 100%;
+    background: var(--color-ac);
+    transform-origin: bottom;
+    transform: scaleY(0.2);
+    animation: eq-bar 900ms ease-in-out infinite;
+  }
+
+  .eq > span:nth-child(2) {
+    animation-delay: -300ms;
+  }
+
+  .eq > span:nth-child(3) {
+    animation-delay: -600ms;
+  }
+
+  /* Paused: hold the bars mid-stride instead of snapping them flat. */
+  .eq-still > span {
+    animation-play-state: paused;
+    background: var(--color-dim);
+  }
+
+  @keyframes eq-bar {
+    0%,
+    100% {
+      transform: scaleY(0.2);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .eq > span {
+      animation: none;
+      transform: scaleY(0.6);
+    }
+  }
+
+  /* The circular equalizer's bars. The bloom is the same two-stop halo every
+     accent-coloured thing on the site carries, restated for a stroke. */
+  .eq-ring {
+    filter:
+      drop-shadow(0 0 2px color-mix(in oklab, var(--color-ac) 55%, transparent))
+      drop-shadow(0 0 7px color-mix(in oklab, var(--color-ac) 30%, transparent));
+  }
+
+  /* Seek bar in the music panel. Native range input, restyled — it keeps the
+     keyboard and screen-reader behaviour a hand-built slider would have to
+     reimplement. */
+  .seek {
+    appearance: none;
+    height: 3px;
+    background: var(--color-track);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  .seek::-webkit-slider-thumb {
+    appearance: none;
+    width: 11px;
+    height: 11px;
+    margin-top: -1px;
+    border-radius: 999px;
+    background: var(--color-ac);
+    box-shadow: var(--ac-bloom);
+    cursor: pointer;
+  }
+
+  .seek::-moz-range-thumb {
+    width: 11px;
+    height: 11px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--color-ac);
+    box-shadow: var(--ac-bloom);
+    cursor: pointer;
+  }
+
+  .seek:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
 }

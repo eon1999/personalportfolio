@@ -22,6 +22,48 @@ export const HUD = {
   carousel: 640,
   /** Dossier open / close. */
   dossier: 380,
+  /** Music panel open, same projector warm-up as the dossier. */
+  panel: 380,
+} as const;
+
+/**
+ * The circular equalizer around the track title.
+ *
+ * Radii are in the ring's own 300x300 viewBox, not pixels — the SVG scales to
+ * whatever the panel gives it.
+ */
+export const EQ = {
+  /** Total bars. Even, because the ring is mirrored down the middle. */
+  bars: 72,
+  /** Radius the bars start from. */
+  inner: 96,
+  /** How far a bar at full level reaches past `inner`. */
+  reach: 46,
+  width: 2.5,
+  /** Resting height, so a stopped ring still reads as a ring. */
+  floor: 0.08,
+  /**
+   * `damp` factors, asymmetric on purpose: a bar jumps to a transient almost
+   * at once and falls back slowly. Matched attack and release read as the ring
+   * breathing rather than as it responding to the music.
+   */
+  attack: 0.2,
+  release: 0.045,
+  /**
+   * Share of the spectrum the ring covers. The top of an FFT on music is
+   * mostly empty, and including it flattens everything worth looking at.
+   */
+  spectrum: 0.62,
+  /**
+   * Spectral tilt, bass end to treble end.
+   *
+   * Music carries most of its energy low down, so an untilted ring pins its
+   * bass bars at full reach and leaves the treble bars flat. Trimming the
+   * bottom and lifting the top spends the ring's travel on what actually
+   * moves.
+   */
+  bassGain: 0.6,
+  trebleGain: 1.5,
 } as const;
 
 /** The reticle's fire gradient, top to bottom: white-hot down to ember. */

@@ -12,3 +12,9 @@ yarn-error.log*
 .vercel
 *.tsbuildinfo
 next-env.d.ts
+
+# The 167MB source mix is over GitHub's 100MB file limit — keep it local and
+# run `npm run split:audio` to regenerate the per-track files, which are small
+# enough to commit.
+assets/
+public/audio/*.mp3

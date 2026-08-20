@@ -2,6 +2,7 @@ import Link from "next/link";
 import { NAV_ITEMS, PROFILE } from "@/data/profile";
 import { Triangle } from "@/components/ui/Triangle";
 import { DisplayText } from "@/components/ui/DisplayText";
+import { MusicButton } from "@/components/audio/MusicButton";
 import { SessionTimer } from "./SessionTimer";
 
 export function TopNav() {
@@ -14,7 +15,8 @@ export function TopNav() {
         </span>
       </Link>
 
-      <div className="ml-auto">
+      <div className="ml-auto flex items-center gap-[9px]">
+        <MusicButton />
         <SessionTimer />
       </div>
 

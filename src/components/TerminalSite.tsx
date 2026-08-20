@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { MotionConfig } from "motion/react";
 import { BootOverlay } from "@/components/boot/BootOverlay";
+import { useJukeboxContext } from "@/components/audio/JukeboxProvider";
 import { ReplayCover } from "@/components/gate/ReplayCover";
 import { ReturnGate } from "@/components/gate/ReturnGate";
 import { WelcomeGate } from "@/components/gate/WelcomeGate";
@@ -36,7 +37,19 @@ export function TerminalSite() {
 
   useEffect(clearHandback, []);
 
-  const { phase, logs, pct, sync, start, skip, reset } = useBootSequence();
+  const { phase, logs, pct, sync, start: startBoot, skip, reset } =
+    useBootSequence();
+  const { start: startMusic } = useJukeboxContext();
+
+  /**
+   * Initiating the boot is the first gesture of the visit, and the only one the
+   * browser will accept as permission to make noise — so the mix comes up with
+   * the sequence rather than waiting to be found in the nav.
+   */
+  const start = useCallback(() => {
+    startBoot();
+    startMusic();
+  }, [startBoot, startMusic]);
   const { bootVisible, revealed, hideBoot, finish, reset: resetReveal } =
     useReveal(skipBoot);
   const [replaying, setReplaying] = useState(false);

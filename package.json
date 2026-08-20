@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "split:audio": "node scripts/split-audio.mjs"
   },
   "dependencies": {
     "animejs": "^4.5.0",
