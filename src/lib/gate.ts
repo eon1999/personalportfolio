@@ -7,7 +7,9 @@
  *
  * - `WELCOME` — boot terminal → home. Cover, greet the operator, ripple open.
  * - `ACCESS`  — arriving on a sub-page. Fast log, clearance line, ripple open.
- * - `REPLAY`  — home → boot terminal. Ripple shut from the edges in, then seal.
+ * - `REPLAY`  — site → boot terminal. Ripple shut from the edges in, then seal.
+ * - `RETURN`  — sub-page → home. `REPLAY`'s cover, then ripple open on the far
+ *   side of the navigation, so the route swap happens behind full black.
  */
 
 /** Shared by every gate: the tile ripple and the shockwave riding its edge. */
@@ -74,6 +76,15 @@ export const REPLAY = {
   seal: 260,
   /** Beat of full black before the terminal takes over. */
   settle: 180,
+} as const;
+
+/**
+ * Landing on the home page from a sub-page, picking the screen up on the black
+ * `REPLAY` left it on. The opening is `RIPPLE`'s, shared with the other gates.
+ */
+export const RETURN = {
+  /** Beat of black held before opening, so the seam reads as one transition. */
+  settle: 160,
 } as const;
 
 /** Target tile size in px; the grid is sized to cover the viewport. */

@@ -8,10 +8,14 @@ import { TileGrid } from "./TileGrid";
 import { useTileGrid } from "./useTileGrid";
 
 /**
- * Home → boot terminal, the uncover run backwards. Tiles close in from the
+ * Site → boot terminal, the uncover run backwards. Tiles close in from the
  * edges toward the centre, a solid backing fades up to seal the seams, then a
  * beat of full black hands over to the terminal — which flickers its standby
  * screen in from the same black.
+ *
+ * Driven by `REPLAY BOOT` on the home page and by `RETURN TO TERMINAL` on a
+ * sub-page; there `onCovered` is where the route swap happens, so the
+ * navigation lands behind an opaque screen.
  */
 export function ReplayCover({
   onCovered,

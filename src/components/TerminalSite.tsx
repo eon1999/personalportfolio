@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { MotionConfig } from "motion/react";
 import { BootOverlay } from "@/components/boot/BootOverlay";
 import { ReplayCover } from "@/components/gate/ReplayCover";
+import { ReturnGate } from "@/components/gate/ReturnGate";
 import { WelcomeGate } from "@/components/gate/WelcomeGate";
 import { SiteFrame } from "@/components/chrome/SiteFrame";
 import { Hero } from "@/components/hero/Hero";
@@ -16,12 +17,24 @@ import { useBootSequence } from "@/hooks/useBootSequence";
 import { useClock } from "@/hooks/useClock";
 import { useReveal } from "@/hooks/useReveal";
 import { useScrollLock } from "@/hooks/useScrollLock";
-import { hasBeenGated, markGated } from "@/lib/session";
+import {
+  clearHandback,
+  hasBeenGated,
+  hasHandback,
+  markGated,
+} from "@/lib/session";
 
 export function TerminalSite() {
   // Returning from a sub-page shouldn't replay the whole cold boot; a reload
   // should. `hasBeenGated` is module state, so it draws exactly that line.
   const [skipBoot] = useState(hasBeenGated);
+
+  // Kept a pure read: strict mode renders twice, so consuming the flag in the
+  // initializer would hand the second render a different answer. Clearing it is
+  // an effect's job instead.
+  const [handingBack, setHandingBack] = useState(hasHandback);
+
+  useEffect(clearHandback, []);
 
   const { phase, logs, pct, sync, start, skip, reset } = useBootSequence();
   const { bootVisible, revealed, hideBoot, finish, reset: resetReveal } =
@@ -29,7 +42,7 @@ export function TerminalSite() {
   const [replaying, setReplaying] = useState(false);
   const bootClock = useClock();
 
-  useScrollLock(!revealed || replaying);
+  useScrollLock(!revealed || replaying || handingBack);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -49,6 +62,9 @@ export function TerminalSite() {
     markGated();
     finish();
   }, [finish]);
+
+  /** The return transition has rippled open; the site owns the screen. */
+  const onHandbackRevealed = useCallback(() => setHandingBack(false), []);
 
   /** Hands the screen back to the terminal once the cover has sealed. */
   const onReplayCovered = useCallback(() => {
@@ -79,6 +95,12 @@ export function TerminalSite() {
             ) : null}
 
             {replaying ? <ReplayCover onCovered={onReplayCovered} /> : null}
+
+            {/* Stable callback: the clock re-renders this every second, and a
+                fresh identity would restart the gate's timeline each tick. */}
+            {handingBack ? (
+              <ReturnGate onRevealed={onHandbackRevealed} />
+            ) : null}
 
             {bootVisible ? (
               <BootOverlay
