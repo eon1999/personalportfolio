@@ -5,14 +5,22 @@ import { animate } from "animejs";
 import { HUD } from "@/lib/hud";
 import { prefersReducedMotion } from "@/lib/prefs";
 
-const BAND = 190;
+const BAND = 240;
 
 /**
- * The amber refresh line that walks down the whole site, top to bottom, for
- * ever. Same trick as the boot screen's `SweepBand`: the element is one band
+ * The amber refresh wash that walks down the whole site, top to bottom, for
+ * ever.
+ *
+ * Built the same way as the boot screen's `SweepBand`, and deliberately so: a
+ * single soft gradient with no hot line in it, because anything with a hard
+ * edge draws the eye off the paragraph it is crossing. The element is one band
  * taller than the viewport and starts one band above it, so a 0% → 100%
- * translate of its own height carries the line from just off the top to just
+ * translate of its own height carries the band from just off the top to just
  * off the bottom without mixing units.
+ *
+ * The band is twice as tall as the boot one and runs at `--scan`, the monitor's
+ * own strength dial — so it lands at half the boot band's peak, and drops
+ * further still when a dossier takes the screen.
  */
 export function ScanBeam() {
   const ref = useRef<HTMLDivElement>(null);
@@ -41,30 +49,10 @@ export function ScanBeam() {
       style={{
         top: -BAND,
         height: `calc(100vh + ${BAND}px)`,
+        background: `linear-gradient(180deg, transparent, color-mix(in oklab, var(--color-ac) 8%, transparent), transparent) top center / 100% ${BAND}px no-repeat`,
+        opacity: "var(--scan)",
         willChange: "transform",
       }}
-    >
-      {/* Trailing wash above the line. */}
-      <div
-        className="absolute inset-x-0 top-0"
-        style={{
-          height: BAND,
-          background:
-            "linear-gradient(180deg, transparent, color-mix(in oklab, var(--color-ac) 0.7%, transparent) 55%, color-mix(in oklab, var(--color-ac) 2.4%, transparent) 88%, color-mix(in oklab, var(--color-warn) 4%, transparent))",
-        }}
-      />
-      {/* The line itself, brightest mid-screen and feathered at both edges. */}
-      <div
-        className="absolute inset-x-0"
-        style={{
-          top: BAND - 1,
-          height: 1,
-          background:
-            "linear-gradient(90deg, transparent, color-mix(in oklab, var(--color-warn) 14%, transparent) 12%, color-mix(in oklab, var(--color-warn) 24%, transparent) 50%, color-mix(in oklab, var(--color-warn) 14%, transparent) 88%, transparent)",
-          boxShadow:
-            "0 0 12px color-mix(in oklab, var(--color-ac) 18%, transparent)",
-        }}
-      />
-    </div>
+    />
   );
 }
