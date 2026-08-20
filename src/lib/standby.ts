@@ -89,3 +89,21 @@ export const STANDBY_HINT_BLINK: FlickerStep[] = [
   { to: 0, duration: 588 },
   { to: 1, duration: 12 },
 ];
+
+/** Total duration of the initial power-up flicker sequence. */
+export const STANDBY_FLICKER_DURATION = STANDBY_FLICKER.reduce(
+  (sum, step) => sum + step.duration,
+  0,
+);
+
+/**
+ * After the initial power-up, the standby panel flickers at random intervals —
+ * a brief dip in brightness rather than a full loss of signal, like a tube
+ * struggling to hold.
+ *
+ * The values below bound a single strike: how far it dips, how long the
+ * dip lasts, and the random gap before the next one.
+ */
+export const STANDBY_FLICKER_DEPTH = { min: 0.3, max: 0.6 };
+export const STANDBY_FLICKER_STRIKE = { min: 25, max: 70 };
+export const STANDBY_FLICKER_GAP = { min: 2500, max: 5500 };

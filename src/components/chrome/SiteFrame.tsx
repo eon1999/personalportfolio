@@ -16,6 +16,8 @@ interface SiteFrameProps {
   readonly children: React.ReactNode;
   /** Right-hand slot in the bottom status bar. */
   readonly action?: React.ReactNode;
+  /** Optional sync value (0–64.7) to display in the status bar. */
+  readonly syncValue?: number;
   /** Full-screen gates, layered above the chrome. */
   readonly overlays?: React.ReactNode;
   /** Receives the live clock, for anything in the content that wants it. */
@@ -29,6 +31,7 @@ interface SiteFrameProps {
 export function SiteFrame({
   children,
   action,
+  syncValue,
   overlays,
   render,
 }: SiteFrameProps) {
@@ -56,7 +59,9 @@ export function SiteFrame({
         <SiteFooter clock={clock} />
       </div>
 
-      <StatusBar scrollProgress={scrollProgress}>{action}</StatusBar>
+      <StatusBar scrollProgress={scrollProgress} syncValue={syncValue}>
+        {action}
+      </StatusBar>
 
       {overlays}
       <CursorReticle />

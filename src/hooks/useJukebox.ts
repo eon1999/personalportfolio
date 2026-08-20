@@ -33,6 +33,8 @@ export interface Jukebox {
   readonly next: () => void;
   /** Begins playing if nothing is going yet. Idempotent — safe to call twice. */
   readonly start: () => void;
+  /** Pauses playback if currently playing. No-op otherwise. */
+  readonly pause: () => void;
   readonly seek: (seconds: number) => void;
 }
 
@@ -157,6 +159,15 @@ export function useJukebox(
       .catch(() => setStatus("error"));
   }, [advance, audioRef, index, status]);
 
+  /** Pauses playback if running. Safe to call when already stopped. */
+  const pause = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio || status !== "playing") return;
+
+    audio.pause();
+    setStatus("paused");
+  }, [audioRef, status]);
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -243,6 +254,7 @@ export function useJukebox(
     toggle,
     next,
     start,
+    pause,
     seek,
     volume,
     setVolume,

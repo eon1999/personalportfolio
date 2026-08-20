@@ -30,8 +30,12 @@ export default function RootLayout({
       <head>
         {/* Blocking on purpose, and tiny: it puts the visitor's chrome scale
             on the document before the first paint, so the bars never come up
-            at the default and snap. */}
-        <script dangerouslySetInnerHTML={{ __html: CHROME_SCALE_BOOTSTRAP }} />
+            at the default and snap. A raw tag rather than `next/script` —
+            `beforeInteractive` is for `src` scripts, and an inline one gets
+            re-created on the client, where React never executes it. */}
+        <script
+          dangerouslySetInnerHTML={{ __html: CHROME_SCALE_BOOTSTRAP }}
+        />
       </head>
       <body>
         <FireDrift />

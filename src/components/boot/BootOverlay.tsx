@@ -5,8 +5,10 @@ import type { BootLogLine } from "@/data/boot-sequence";
 import type { BootPhase } from "@/hooks/useBootSequence";
 import { PROFILE } from "@/data/profile";
 import { cn } from "@/lib/cn";
+import { TIMING } from "@/lib/motion";
 import { BootRunning } from "./BootRunning";
 import { BootStandby } from "./BootStandby";
+import { CharacterRain } from "./CharacterRain";
 import { CornerBrackets } from "./CornerBrackets";
 import { SweepBand } from "./SweepBand";
 
@@ -15,8 +17,11 @@ interface BootOverlayProps {
   readonly logs: readonly BootLogLine[];
   readonly pct: number;
   readonly sync: number;
+  readonly syncArmed: boolean;
   readonly clock: string;
   readonly onStart: () => void;
+  /** The rain has cleared; the log timeline can start. */
+  readonly onRainComplete: () => void;
   readonly onSkip: () => void;
 }
 
@@ -25,8 +30,10 @@ export function BootOverlay({
   logs,
   pct,
   sync,
+  syncArmed,
   clock,
   onStart,
+  onRainComplete,
   onSkip,
 }: BootOverlayProps) {
   return (
@@ -51,31 +58,35 @@ export function BootOverlay({
         {clock}
       </p>
 
+      {/* The rain phase deliberately holds nothing: the wipe plays against an
+          empty screen, and the panel strikes on only once it has cleared. */}
       <AnimatePresence mode="wait" initial={false}>
         {phase === "idle" ? (
           <motion.div
             key="standby"
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.12 }}
+            transition={{ duration: TIMING.standbyExit }}
           >
             <BootStandby onStart={onStart} />
           </motion.div>
-        ) : (
-          <motion.div
-            key="running"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.18 }}
-          >
+        ) : phase === "rain" ? null : (
+          <motion.div key="running">
             <BootRunning
               logs={logs}
               pct={pct}
               sync={sync}
+              syncArmed={syncArmed}
               onSkip={onSkip}
             />
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Outside the presence swap: it paints to its own canvas and has
+          nothing for `mode="wait"` to sequence. */}
+      {phase === "rain" ? (
+        <CharacterRain onComplete={onRainComplete} />
+      ) : null}
     </div>
   );
 }

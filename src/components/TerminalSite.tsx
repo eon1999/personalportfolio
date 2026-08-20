@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { MotionConfig } from "motion/react";
 import { BootOverlay } from "@/components/boot/BootOverlay";
+import { BootAudioPrompt } from "@/components/boot/BootAudioPrompt";
 import { useJukeboxContext } from "@/components/audio/JukeboxProvider";
 import { ReplayCover } from "@/components/gate/ReplayCover";
 import { ReturnGate } from "@/components/gate/ReturnGate";
@@ -37,19 +38,50 @@ export function TerminalSite() {
 
   useEffect(clearHandback, []);
 
-  const { phase, logs, pct, sync, start: startBoot, skip, reset } =
-    useBootSequence();
-  const { start: startMusic } = useJukeboxContext();
+  const {
+    phase,
+    logs,
+    pct,
+    sync,
+    syncArmed,
+    start: startBoot,
+    beginLogs,
+    skip,
+    reset,
+  } = useBootSequence();
+  const { start: startMusic, pause, status: jukeboxStatus } =
+    useJukeboxContext();
+
+  // Pass the final sync value to the chrome StatusBar so it persists after boot.
+  const syncForStatus = phase === "done" ? sync : undefined;
+
+  const [audioPromptOpen, setAudioPromptOpen] = useState(false);
 
   /**
-   * Initiating the boot is the first gesture of the visit, and the only one the
-   * browser will accept as permission to make noise — so the mix comes up with
-   * the sequence rather than waiting to be found in the nav.
+   * Pressing ENTER is the first gesture of the visit, and the one the browser
+   * will accept as permission to make noise. Rather than unpausing audio
+   * unprompted, we ask first — the prompt blocks the sequence until the
+   * operator confirms.
    */
-  const start = useCallback(() => {
-    startBoot();
-    startMusic();
-  }, [startBoot, startMusic]);
+  const initiate = useCallback(() => {
+    setAudioPromptOpen(true);
+  }, []);
+
+  const closeAudioPrompt = useCallback(() => setAudioPromptOpen(false), []);
+
+  /** Proceeds past the audio prompt into the actual boot sequence. */
+  const onAudioConfirm = useCallback(
+    (audioOn: boolean) => {
+      setAudioPromptOpen(false);
+      startBoot();
+      if (audioOn) {
+        startMusic();
+      } else if (jukeboxStatus === "playing") {
+        pause();
+      }
+    },
+    [startBoot, startMusic, pause, jukeboxStatus],
+  );
   const { bootVisible, revealed, hideBoot, finish, reset: resetReveal } =
     useReveal(skipBoot);
   const [replaying, setReplaying] = useState(false);
@@ -61,15 +93,18 @@ export function TerminalSite() {
     const onKeyDown = (event: KeyboardEvent) => {
       if (phase === "idle" && (event.key === "Enter" || event.key === " ")) {
         event.preventDefault();
-        start();
-      } else if (phase === "running" && event.key === "Escape") {
+        initiate();
+      } else if (
+        (phase === "rain" || phase === "running") &&
+        event.key === "Escape"
+      ) {
         skip();
       }
     };
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [phase, start, skip]);
+  }, [phase, initiate, skip]);
 
   const onRevealed = useCallback(() => {
     markGated();
@@ -100,6 +135,7 @@ export function TerminalSite() {
             REPLAY BOOT
           </button>
         }
+        syncValue={syncForStatus}
         render={(clock) => <Hero clock={clock} />}
         overlays={
           <>
@@ -121,9 +157,18 @@ export function TerminalSite() {
                 logs={logs}
                 pct={pct}
                 sync={sync}
+                syncArmed={syncArmed}
                 clock={bootClock}
-                onStart={start}
+                onStart={initiate}
+                onRainComplete={beginLogs}
                 onSkip={skip}
+              />
+            ) : null}
+
+            {audioPromptOpen ? (
+              <BootAudioPrompt
+                onConfirm={onAudioConfirm}
+                onClose={closeAudioPrompt}
               />
             ) : null}
           </>
