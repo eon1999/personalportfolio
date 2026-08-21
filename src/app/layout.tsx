@@ -4,6 +4,8 @@ import { JukeboxProvider } from "@/components/audio/JukeboxProvider";
 import { FireDrift } from "@/components/chrome/FireDrift";
 import { SettingsProvider } from "@/components/settings/SettingsProvider";
 import { CHROME_SCALE_BOOTSTRAP } from "@/lib/settings";
+import { HERO_BIO, LINKS, PROFILE } from "@/data/profile";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 // The display face is Times New Roman — installed everywhere the site is
@@ -15,9 +17,59 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "V. DANG — TERMINAL 001",
-  description:
-    "Viet-Anh Dang — CS student at UT Austin. Machine learning research at the Oden Institute, full-stack platforms, and research tooling.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "V. DANG — TERMINAL 001",
+    template: "%s — V. DANG",
+  },
+  description: HERO_BIO,
+  keywords: [
+    "Viet-Anh Dang",
+    "UT Austin computer science",
+    "machine learning research",
+    "Oden Institute",
+    "full-stack developer portfolio",
+  ],
+  authors: [{ name: PROFILE.shortName }],
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: "V. DANG — TERMINAL 001",
+    title: "V. DANG — TERMINAL 001",
+    description: HERO_BIO,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "V. DANG — TERMINAL 001",
+    description: HERO_BIO,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: `${PROFILE.firstName} ${PROFILE.lastName}`,
+  alternateName: PROFILE.shortName,
+  url: SITE_URL,
+  email: `mailto:${PROFILE.email}`,
+  jobTitle: "Computer Science Student & Engineering Fellow",
+  affiliation: {
+    "@type": "CollegeOrUniversity",
+    name: "University of Texas at Austin",
+  },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Austin",
+    addressRegion: "TX",
+  },
+  sameAs: [LINKS.github],
 };
 
 export default function RootLayout({
@@ -35,6 +87,12 @@ export default function RootLayout({
             re-created on the client, where React never executes it. */}
         <script
           dangerouslySetInnerHTML={{ __html: CHROME_SCALE_BOOTSTRAP }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c"),
+          }}
         />
       </head>
       <body>

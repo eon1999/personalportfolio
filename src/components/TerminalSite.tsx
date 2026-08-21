@@ -19,6 +19,7 @@ import { useBootSequence } from "@/hooks/useBootSequence";
 import { useClock } from "@/hooks/useClock";
 import { useReveal } from "@/hooks/useReveal";
 import { useScrollLock } from "@/hooks/useScrollLock";
+import { useSyncDrift } from "@/hooks/useSyncDrift";
 import {
   clearHandback,
   hasBeenGated,
@@ -52,8 +53,9 @@ export function TerminalSite() {
   const { start: startMusic, pause, status: jukeboxStatus } =
     useJukeboxContext();
 
-  // Pass the final sync value to the chrome StatusBar so it persists after boot.
-  const syncForStatus = phase === "done" ? sync : undefined;
+  // Drift the sync value after boot so the readout never looks frozen.
+  const syncDrifted = useSyncDrift(phase === "done");
+  const syncForStatus = phase === "done" ? syncDrifted : undefined;
 
   const [audioPromptOpen, setAudioPromptOpen] = useState(false);
 

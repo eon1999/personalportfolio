@@ -10,9 +10,12 @@ import { ABOUT_PARAGRAPHS, PROFILE } from "@/data/profile";
 import { RECORD } from "@/data/record";
 
 export const metadata: Metadata = {
-  title: "About — V. DANG",
+  title: "About",
   description:
     "Viet-Anh Dang — CS at UT Austin, machine learning research at the Oden Institute, and work sitting between research and infrastructure.",
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default function AboutPage() {

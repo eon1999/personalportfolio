@@ -101,11 +101,11 @@ export function BootStandby({ onStart }: { readonly onStart: () => void }) {
     <div ref={rootRef} className="relative text-center opacity-0">
       <Insignia />
 
-      <h1 className="mt-[34px] text-[clamp(34px,7vw,52px)] tracking-[.18em] text-ink">
+      <p className="mt-[34px] text-[clamp(34px,7vw,52px)] tracking-[.18em] text-ink">
         <DisplayText hatch className="origin-center">
           STANDBY
         </DisplayText>
-      </h1>
+      </p>
       <p className="mt-2 text-[11px] tracking-[.34em] text-dim">
         OPERATOR RECORD — {PROFILE.shortName}
       </p>

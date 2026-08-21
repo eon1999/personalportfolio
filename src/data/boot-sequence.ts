@@ -98,6 +98,17 @@ export const SYNC_APPROACH = { min: 0.24, max: 0.44 };
 /** The creep past the hold is slower than the rise into it. */
 export const SYNC_CREEP_FACTOR = 0.45;
 
+/**
+ * Post-boot drift: the sync ratio wanders between these bounds so the
+ * readout never looks frozen.  A slow random walk with small steps keeps
+ * the hardware-feel alive after the sequence completes.
+ */
+export const DRIFT_MIN = 50;
+export const DRIFT_MAX = 100;
+export const DRIFT_TICK_MS = 1200;
+/** Maximum absolute change per tick — small enough to feel gradual. */
+export const DRIFT_STEP = 0.6;
+
 export function formatStamp(ms: number): string {
   return `[${(ms / 1000).toFixed(2).padStart(5, "0")}]`;
 }

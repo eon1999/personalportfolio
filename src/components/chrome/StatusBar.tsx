@@ -1,11 +1,13 @@
 import { SegmentReadout } from "@/components/ui/SegmentReadout";
+import { formatSync } from "@/data/boot-sequence";
 
 interface StatusBarProps {
   /** Zero-padded percentage, e.g. `07%`. */
   readonly scrollProgress: string;
   /**
-   * Sync ratio the boot sequence settled on (0–64.7). Omitted until the
-   * sequence has finished, and on pages that never ran one.
+   * Sync ratio the boot sequence settled on.  Omitted until the sequence has
+   * finished, and on pages that never ran one.  The value drifts post-boot so
+   * the readout stays alive.
    */
   readonly syncValue?: number;
   /** Right-hand slot — `REPLAY BOOT` on the home page, a way back elsewhere. */
@@ -39,7 +41,14 @@ export function StatusBar({
       {syncValue !== undefined ? (
         <span className="hidden items-center gap-[6px] wide:flex">
           <span aria-hidden>SYNC</span>
-          <span className="tabular-nums text-ac">{syncValue.toFixed(1)}%</span>
+          <SegmentReadout
+            value={formatSync(syncValue)}
+            height={12}
+            quiet
+            className="lcd"
+            label={`Sync ratio ${syncValue.toFixed(1)} percent`}
+          />
+          <span aria-hidden>%</span>
         </span>
       ) : null}
 

@@ -7,8 +7,11 @@ import { WritingFeed } from "@/components/sections/WritingFeed";
 import { WRITING } from "@/data/writing";
 
 export const metadata: Metadata = {
-  title: "Writing — V. DANG",
+  title: "Writing",
   description: "Notes and write-ups by Viet-Anh Dang.",
+  alternates: {
+    canonical: "/writing",
+  },
 };
 
 export default function WritingPage() {
